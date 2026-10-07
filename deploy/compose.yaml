@@ -1,0 +1,81 @@
+name: cross-team-matcher
+x-db: &db
+  image: postgres:17.4-bookworm
+  restart: unless-stopped
+  environment:
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?generate .local/compose.env first}
+    POSTGRES_DB: postgres
+  command: ["postgres", "-c", "wal_level=logical", "-c", "max_replication_slots=20", "-c", "max_wal_senders=20", "-c", "max_logical_replication_workers=12", "-c", "max_worker_processes=24", "-c", "max_slot_wal_keep_size=1GB"]
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U postgres"]
+    interval: 2s
+    timeout: 3s
+    retries: 30
+x-app: &app
+  build:
+    context: ..
+    dockerfile: deploy/Dockerfile
+  restart: unless-stopped
+  depends_on:
+    bootstrap:
+      condition: service_completed_successfully
+services:
+  central:
+    <<: *db
+    volumes: ["central-data:/var/lib/postgresql/data"]
+  region1:
+    <<: *db
+    volumes: ["region1-data:/var/lib/postgresql/data"]
+  region2:
+    <<: *db
+    volumes: ["region2-data:/var/lib/postgresql/data"]
+  bootstrap:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    restart: "no"
+    volumes: ["../.local:/app/.local"]
+    command: ["python", "scripts/compose_bootstrap.py"]
+    depends_on:
+      central: {condition: service_healthy}
+      region1: {condition: service_healthy}
+      region2: {condition: service_healthy}
+  app-c:
+    <<: *app
+    ports: ["127.0.0.1:8200:8000"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL_0}
+      NODE_REGION: "0"
+      SESSION_SECRET: ${SESSION_SECRET_0}
+  app-r1:
+    <<: *app
+    ports: ["127.0.0.1:8201:8000"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL_1}
+      NODE_REGION: "1"
+      SESSION_SECRET: ${SESSION_SECRET_1}
+  app-r2:
+    <<: *app
+    ports: ["127.0.0.1:8202:8000"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL_2}
+      NODE_REGION: "2"
+      SESSION_SECRET: ${SESSION_SECRET_2}
+  worker-r1:
+    <<: *app
+    command: ["python", "-m", "app.worker"]
+    environment:
+      DATABASE_URL: ${WORKER_DATABASE_URL_1}
+      NODE_REGION: "1"
+      SESSION_SECRET: ${SESSION_SECRET_1}
+  worker-r2:
+    <<: *app
+    command: ["python", "-m", "app.worker"]
+    environment:
+      DATABASE_URL: ${WORKER_DATABASE_URL_2}
+      NODE_REGION: "2"
+      SESSION_SECRET: ${SESSION_SECRET_2}
+volumes:
+  central-data:
+  region1-data:
+  region2-data:
