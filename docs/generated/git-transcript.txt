@@ -1,0 +1,241 @@
+Lab 2: real Git operations; local bare remote; synthetic identities.
+
+> git init --bare --initial-branch=main origin.git
+Initialized empty Git repository in D:/laptop/cross-team-matcher/.local/lab2-git/20261007T183531245067/origin.git/
+
+exit=0
+
+> git clone D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git author
+
+Cloning into 'author'...
+warning: You appear to have cloned an empty repository.
+done.
+exit=0
+
+> git config user.name Lab Participant
+
+
+exit=0
+
+> git config user.email lab@example.invalid
+
+
+exit=0
+
+> git add .
+
+
+exit=0
+
+> git commit -m Initial tested capacity model
+[main (root-commit) 276318f] Initial tested capacity model
+ 2 files changed, 4 insertions(+)
+ create mode 100644 budget.py
+ create mode 100644 test_budget.py
+
+exit=0
+
+> git push -u origin main
+branch 'main' set up to track 'origin/main'.
+To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
+ * [new branch]      main -> main
+exit=0
+
+> git clone D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git reviewer
+
+Cloning into 'reviewer'...
+done.
+exit=0
+
+> git pull --ff-only
+Already up to date.
+
+exit=0
+
+> git log --oneline --all
+276318f Initial tested capacity model
+
+exit=0
+
+> git switch -c feature/calendar
+
+Switched to a new branch 'feature/calendar'
+exit=0
+
+> git add budget.py
+
+
+exit=0
+
+> git commit -m Feature with a deliberate teaching defect
+[feature/calendar 6747e11] Feature with a deliberate teaching defect
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+exit=0
+
+> git push -u origin feature/calendar
+branch 'feature/calendar' set up to track 'origin/feature/calendar'.
+To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
+ * [new branch]      feature/calendar -> feature/calendar
+exit=0
+
+> git switch main
+Your branch is up to date with 'origin/main'.
+Switched to branch 'main'
+exit=0
+
+> git add budget.py
+
+
+exit=0
+
+> git commit -m Concurrent main change
+[main c180905] Concurrent main change
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+exit=0
+
+> git merge --no-ff feature/calendar
+Auto-merging budget.py
+CONFLICT (content): Merge conflict in budget.py
+Automatic merge failed; fix conflicts and then commit the result.
+
+exit=1
+
+> git add budget.py
+
+
+exit=0
+
+> git commit -m Resolve conflict incorrectly for the lab
+[main 7955397] Resolve conflict incorrectly for the lab
+
+exit=0
+
+> git rev-parse HEAD
+7955397995841993d8e45c8c7513f410001ee81b
+
+exit=0
+
+> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+
+Traceback (most recent call last):
+  File "D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\author\test_budget.py", line 2, in <module>
+    assert remaining(40, 24) == 16
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+exit=1
+
+> git revert -m 1 --no-edit 7955397995841993d8e45c8c7513f410001ee81b
+[main c9a999d] Revert "Resolve conflict incorrectly for the lab"
+ Date: Wed Oct 7 21:36:07 2026 +0300
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+exit=0
+
+> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+
+
+exit=0
+
+> git switch feature/calendar
+Your branch is up to date with 'origin/feature/calendar'.
+Switched to branch 'feature/calendar'
+exit=0
+
+> git branch -m feature/calendar-fixed
+
+
+exit=0
+
+> git add budget.py
+
+
+exit=0
+
+> git commit -m Fix capacity subtraction
+[feature/calendar-fixed e95f30d] Fix capacity subtraction
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+exit=0
+
+> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+
+
+exit=0
+
+> git switch main
+Your branch is ahead of 'origin/main' by 4 commits.
+  (use "git push" to publish your local commits)
+Switched to branch 'main'
+exit=0
+
+> git merge --no-ff feature/calendar-fixed
+Auto-merging budget.py
+CONFLICT (content): Merge conflict in budget.py
+Automatic merge failed; fix conflicts and then commit the result.
+
+
+exit=1
+> git add budget.py
+
+
+exit=0
+
+> git commit -m Resolve second conflict with tested subtraction
+[main d40a8d1] Resolve second conflict with tested subtraction
+
+exit=0
+
+> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+
+
+exit=0
+
+> git push origin main
+
+To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
+   276318f..d40a8d1  main -> main
+exit=0
+
+> git branch --unset-upstream feature/calendar-fixed
+
+
+exit=0
+
+> git branch -d feature/calendar-fixed
+Deleted branch feature/calendar-fixed (was e95f30d).
+
+exit=0
+
+> git push origin --delete feature/calendar
+
+To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
+ - [deleted]         feature/calendar
+exit=0
+
+> git pull --ff-only
+Updating 276318f..d40a8d1
+Fast-forward
+From D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin
+   276318f..d40a8d1  main       -> origin/main
+exit=0
+
+> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+
+
+exit=0
+
+> git log --oneline --graph --all
+*   d40a8d1 Resolve second conflict with tested subtraction
+|\  
+| * e95f30d Fix capacity subtraction
+* | c9a999d Revert "Resolve conflict incorrectly for the lab"
+* | 7955397 Resolve conflict incorrectly for the lab
+|\| 
+| * 6747e11 Feature with a deliberate teaching defect
+* | c180905 Concurrent main change
+|/  
+* 276318f Initial tested capacity model
+
+exit=0

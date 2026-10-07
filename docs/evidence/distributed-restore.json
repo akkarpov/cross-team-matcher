@@ -1,0 +1,148 @@
+{
+  "started_utc": "2026-10-07T18:25:08.344785+00:00",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "network": "localhost loopback; no injected delay",
+  "tests": {
+    "T15": {
+      "started_utc": "2026-10-07T18:27:59.178965+00:00",
+      "databases": {
+        "0": {
+          "database": "matcher_restore_1791397679_0",
+          "table_count": 34,
+          "hashes_equal": true
+        },
+        "1": {
+          "database": "matcher_restore_1791397679_1",
+          "table_count": 32,
+          "hashes_equal": true
+        },
+        "2": {
+          "database": "matcher_restore_1791397679_2",
+          "table_count": 32,
+          "hashes_equal": true
+        }
+      },
+      "success": true,
+      "elapsed_seconds": 428.422
+    }
+  },
+  "nodes": {
+    "0": {
+      "postgres": "PostgreSQL 17.4 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit",
+      "slots": [
+        {
+          "slot_name": "from_c",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/28BD458",
+          "restart_lsn": "0/28BD420",
+          "wal_status": "reserved",
+          "retained_bytes": "56"
+        },
+        {
+          "slot_name": "matcher_0_to_2",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/28BD458",
+          "restart_lsn": "0/28BD420",
+          "wal_status": "reserved",
+          "retained_bytes": "56"
+        }
+      ],
+      "subscriptions": [
+        {
+          "subname": "from_r1",
+          "subenabled": true,
+          "pid": 38652,
+          "last_msg_receipt_time": "2026-10-07 21:25:08.852536+03:00",
+          "latest_end_lsn": "0/20192A0"
+        },
+        {
+          "subname": "from_r2",
+          "subenabled": true,
+          "pid": 51948,
+          "last_msg_receipt_time": "2026-10-07 21:24:53.254075+03:00",
+          "latest_end_lsn": "0/20021B0"
+        }
+      ]
+    },
+    "1": {
+      "postgres": "PostgreSQL 17.4 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit",
+      "slots": [
+        {
+          "slot_name": "from_r1",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/20192A0",
+          "restart_lsn": "0/2019218",
+          "wal_status": "reserved",
+          "retained_bytes": "136"
+        },
+        {
+          "slot_name": "matcher_1_to_2",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/20192A0",
+          "restart_lsn": "0/2019218",
+          "wal_status": "reserved",
+          "retained_bytes": "136"
+        }
+      ],
+      "subscriptions": [
+        {
+          "subname": "from_c",
+          "subenabled": true,
+          "pid": 53168,
+          "last_msg_receipt_time": "2026-10-07 21:24:47.197587+03:00",
+          "latest_end_lsn": "0/28BD458"
+        },
+        {
+          "subname": "from_r2",
+          "subenabled": true,
+          "pid": 47220,
+          "last_msg_receipt_time": "2026-10-07 21:24:54.098323+03:00",
+          "latest_end_lsn": "0/20021B0"
+        }
+      ]
+    },
+    "2": {
+      "postgres": "PostgreSQL 17.4 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit",
+      "slots": [
+        {
+          "slot_name": "from_r2",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/20021B0",
+          "restart_lsn": "0/2002178",
+          "wal_status": "reserved",
+          "retained_bytes": "56"
+        },
+        {
+          "slot_name": "matcher_2_to_1",
+          "slot_type": "logical",
+          "active": true,
+          "confirmed_flush_lsn": "0/20021B0",
+          "restart_lsn": "0/2002178",
+          "wal_status": "reserved",
+          "retained_bytes": "56"
+        }
+      ],
+      "subscriptions": [
+        {
+          "subname": "from_c",
+          "subenabled": true,
+          "pid": 42208,
+          "last_msg_receipt_time": "2026-10-07 21:24:46.811983+03:00",
+          "latest_end_lsn": "0/28BD458"
+        },
+        {
+          "subname": "from_r1",
+          "subenabled": true,
+          "pid": 43324,
+          "last_msg_receipt_time": "2026-10-07 21:25:08.852535+03:00",
+          "latest_end_lsn": "0/20192A0"
+        }
+      ]
+    }
+  }
+}

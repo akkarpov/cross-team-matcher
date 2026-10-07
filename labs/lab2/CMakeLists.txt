@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.20)
+project(CrossTeamLab2 LANGUAGES CXX)
+add_executable(CrossTeamLab2 Employee.cpp main.cpp)
+target_compile_features(CrossTeamLab2 PRIVATE cxx_std_17)
+enable_testing()
+add_test(NAME employee_example COMMAND CrossTeamLab2)

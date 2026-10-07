@@ -1,0 +1,22 @@
+{
+  "started_utc": "2026-10-07T18:37:59.986162+00:00",
+  "databases": {
+    "0": {
+      "database": "matcher_restore_1791398279_0",
+      "table_count": 34,
+      "hashes_equal": true
+    },
+    "1": {
+      "database": "matcher_restore_1791398279_1",
+      "table_count": 32,
+      "hashes_equal": true
+    },
+    "2": {
+      "database": "matcher_restore_1791398279_2",
+      "table_count": 32,
+      "hashes_equal": true
+    }
+  },
+  "success": true,
+  "elapsed_seconds": 96.689
+}

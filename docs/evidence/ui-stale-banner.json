@@ -1,0 +1,18 @@
+{
+  "checks": [
+    {
+      "check": "stale banner",
+      "evidence": "simulated API response: enabled=true, ready=true, is_stale=true"
+    },
+    {
+      "check": "real freshness API exposes is_stale on every source"
+    },
+    {
+      "check": "analytics source badge is stale, not ready",
+      "evidence": "simulated API response"
+    }
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "status": "passed"
+}

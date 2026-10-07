@@ -1,0 +1,230 @@
+{
+  "all_test_ids": [
+    "T09",
+    "T10",
+    "T11",
+    "T12",
+    "T13",
+    "T14",
+    "T15",
+    "T16"
+  ],
+  "results": {
+    "T09": {
+      "status": "PASS",
+      "evidence_file": "distributed-baseline.json",
+      "facts": {
+        "explain": "Foreign Scan on route.employees_r2 employees\n  Output: employees.employee_id, employees.nickname\n  Remote SQL: SELECT employee_id, nickname FROM r2_data.employees WHERE ((owner_region = 2))",
+        "destination_verified": true,
+        "role": "matcher_owner technical maintenance role"
+      }
+    },
+    "T11": {
+      "status": "PASS",
+      "evidence_file": "distributed-baseline.json",
+      "facts": {
+        "center_stopped": true,
+        "local_account_and_profile": true,
+        "local_assignment": true,
+        "direct_regional_delivery": true
+      }
+    },
+    "T12": {
+      "status": "PASS",
+      "evidence_file": "distributed-owner-timeout.json",
+      "facts": {
+        "measured_utc": "2026-10-07T18:47:40.837370+00:00",
+        "stale_search_available": true,
+        "no_unconfirmed_assignment": true,
+        "queued_delivery_recovered": true,
+        "unavailable_owner_seconds": 2.076500999974087,
+        "sqlstate": "08001",
+        "connection_timeout_seconds": 3,
+        "statement_timeout_seconds": 8,
+        "unavailable_owner_target_seconds": 10
+      }
+    },
+    "T13": {
+      "status": "PASS",
+      "evidence_file": "distributed-baseline.json",
+      "facts": {
+        "repeated_command": "d5b30ab0-f92e-43ce-883c-6b01d37acfda",
+        "equal_receipts": true,
+        "duplicate_events": 0,
+        "assignment_id": "8cefca77-81c0-4133-830a-22bf0489ef4e"
+      }
+    },
+    "T14": {
+      "status": "PASS",
+      "evidence_file": "distributed-baseline.json",
+      "facts": {
+        "setup_reapplied": true,
+        "subscriber_restarted": true,
+        "all_tables_ready": true,
+        "replica_business_triggers": 0
+      }
+    },
+    "T16": {
+      "status": "PASS",
+      "evidence_file": "distributed-baseline.json",
+      "facts": {
+        "warmups": 10,
+        "measurements": 100,
+        "concurrent_users": 5,
+        "p50_seconds": 1.699657599965576,
+        "p95_seconds": 2.5416733999736607,
+        "max_seconds": 2.78597730002366,
+        "samples_seconds": [
+          1.6013604000909254,
+          1.725035100011155,
+          1.8367828000336885,
+          1.7207336999708787,
+          1.6445984999882057,
+          1.577182799926959,
+          1.5060855000047013,
+          1.8961448000045493,
+          1.2608515999745578,
+          1.5477116000838578,
+          1.2650374000659212,
+          1.700883699930273,
+          1.2863915000343695,
+          1.548864800017327,
+          1.8329677000874653,
+          1.5586914999876171,
+          1.424310400034301,
+          1.548963600071147,
+          1.5371968999970704,
+          1.5298058999469504,
+          1.4439366000005975,
+          1.78256630001124,
+          1.71869540004991,
+          2.0911977000068873,
+          2.1158536999719217,
+          1.7641872999956831,
+          2.2416883000405505,
+          1.5797273000935093,
+          1.7225926000392064,
+          2.4802985000424087,
+          1.9514673000667244,
+          2.2796851999592036,
+          2.0934736999915913,
+          1.9833068000152707,
+          1.7829653000226244,
+          2.5769460999872535,
+          1.9821306000230834,
+          2.1865003999555483,
+          2.0588268000865355,
+          2.1774605000391603,
+          1.7231495000887662,
+          2.2924617999233305,
+          1.7782539000036195,
+          1.9943656000541523,
+          2.1069314000196755,
+          2.1462705000303686,
+          2.5416733999736607,
+          2.6688583000795916,
+          2.0862614000216126,
+          2.14136539993342,
+          1.6608231000136584,
+          1.7596510000294074,
+          1.7027602000162005,
+          1.7972927000373602,
+          1.4808052000589669,
+          2.0649243000661954,
+          2.6176761999959126,
+          1.627939699916169,
+          2.6151875000214204,
+          2.337303299922496,
+          2.216431000037119,
+          2.78597730002366,
+          1.9876729999668896,
+          1.9953962999861687,
+          1.5297501001041383,
+          1.65923639992252,
+          1.1798684999812394,
+          1.1557957000331953,
+          1.1407100999495015,
+          1.1632513999938965,
+          1.2656067000934854,
+          1.4755900000454858,
+          1.6035755999619141,
+          1.8412572999950498,
+          1.639671599958092,
+          1.4994715000502765,
+          1.540532400016673,
+          1.5708300000987947,
+          1.700949399964884,
+          1.5826710999244824,
+          1.4907128000631928,
+          1.5572574000107124,
+          1.288654400035739,
+          1.3549014999298379,
+          1.4218368999427184,
+          1.2360970999579877,
+          1.17753789993003,
+          1.0456001000711694,
+          1.3268123000161722,
+          1.2866639998974279,
+          1.215299400035292,
+          1.936584600014612,
+          1.6362431000452489,
+          1.9176851999945939,
+          1.6984315000008792,
+          1.8156521000200883,
+          1.2925704000517726,
+          1.1645753999473527,
+          0.894374999916181,
+          0.7893520999932662
+        ],
+        "employees": 320,
+        "competencies": 150,
+        "cpu_logical": 8,
+        "memory_bytes": 16969424896,
+        "postgres": "PostgreSQL 17.4 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit",
+        "target_met": true,
+        "period": "2026-11-02..2026-11-27",
+        "requirements": "10h/week, no competencies, OWN_FIRST"
+      }
+    },
+    "T15": {
+      "status": "PASS",
+      "evidence_file": "restore-final.json",
+      "facts": {
+        "started_utc": "2026-10-07T18:37:59.986162+00:00",
+        "databases": {
+          "0": {
+            "database": "matcher_restore_1791398279_0",
+            "table_count": 34,
+            "hashes_equal": true
+          },
+          "1": {
+            "database": "matcher_restore_1791398279_1",
+            "table_count": 32,
+            "hashes_equal": true
+          },
+          "2": {
+            "database": "matcher_restore_1791398279_2",
+            "table_count": 32,
+            "hashes_equal": true
+          }
+        },
+        "success": true,
+        "elapsed_seconds": 96.689
+      },
+      "method": "Final restore implementation: CREATE DATABASE STRATEGY FILE_COPY; pg_restore --single-transaction; three new read-only clone databases."
+    },
+    "T10": {
+      "status": "PASS",
+      "evidence_file": "distributed-replication.json",
+      "facts": {
+        "measured_utc": "2026-10-07T18:36:42.008372+00:00",
+        "profile_delivery_seconds": 0.227,
+        "review_event_delivery_seconds": 0.5978,
+        "replicas_read_only": true
+      }
+    }
+  },
+  "execution": "Combined factual results from initial run and targeted reruns; not represented as a single clean run.",
+  "initial_failures": "Two initial connection timeouts and one retry timeout during heavy host disk IO; admin timeout raised to 15s, harness worker loop now retries local connection failures like production main. App/worker connection timeout remains 3s.",
+  "complete": true
+}

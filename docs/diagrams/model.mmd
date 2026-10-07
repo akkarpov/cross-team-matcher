@@ -1,0 +1,24 @@
+erDiagram
+    regions ||--o{ employees : owns
+    regions ||--o{ projects : owns
+    employees ||--o| employee_private : local_private
+    employees ||--o{ employee_competencies : verified
+    competencies ||--o{ employee_competencies : identifies
+    employees ||--o{ capacity_periods : available
+    employees ||--o{ unavailability_periods : unavailable
+    employees ||--o{ accounts : authenticates
+    accounts ||--o{ account_roles : grants
+    accounts ||--o{ projects : manages
+    projects ||--|{ project_positions : requires
+    project_positions ||--o{ position_competencies : requires_all
+    competencies ||--o{ position_competencies : identifies
+    project_positions ||--o{ invitations : offers
+    invitations ||--o| invitation_responses : cross_owner_protocol
+    employees ||--o{ invitation_responses : decides
+    invitation_responses ||--o| assignments : confirms
+    employees ||--o{ assignments : participates
+    assignments ||--o{ reviews : completed_receipt
+    projects ||--o{ reviews : context
+    accounts ||--o{ reviews : authors
+    accounts ||--o{ workflow_events : actor
+    outbox ||--o| processed_commands : command_id_protocol

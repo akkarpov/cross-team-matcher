@@ -1,0 +1,10 @@
+{
+  "checks": [
+    "dashboard contains only projects in progress",
+    "competency filter and compact picker work",
+    "calendar edit uses existing period values"
+  ],
+  "page_errors": [],
+  "console_errors": [],
+  "status": "passed"
+}

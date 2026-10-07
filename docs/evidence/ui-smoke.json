@@ -1,0 +1,139 @@
+{
+  "checks": [
+    {
+      "login": "manager.r1",
+      "route": "/",
+      "heading": "Хорошие проекты начинаются с людей."
+    },
+    {
+      "login": "manager.r1",
+      "route": "/employees",
+      "heading": "Сотрудники"
+    },
+    {
+      "login": "manager.r1",
+      "route": "/projects",
+      "heading": "Проекты"
+    },
+    {
+      "login": "manager.r1",
+      "route": "/search",
+      "heading": "Поиск специалистов"
+    },
+    {
+      "login": "manager.r1",
+      "route": "/assignments",
+      "heading": "Назначения"
+    },
+    {
+      "login": "manager.r1",
+      "route": "/reviews",
+      "heading": "Отзывы"
+    },
+    {
+      "login": "manager.r1",
+      "route": "/events",
+      "heading": "История событий"
+    },
+    {
+      "login": "editor.r1",
+      "route": "/",
+      "heading": "Хорошие проекты начинаются с людей."
+    },
+    {
+      "login": "editor.r1",
+      "route": "/employees",
+      "heading": "Сотрудники"
+    },
+    {
+      "login": "editor.r1",
+      "route": "/events",
+      "heading": "История событий"
+    },
+    {
+      "login": "employee.r2",
+      "route": "/",
+      "heading": "Новые возможности уже рядом."
+    },
+    {
+      "login": "employee.r2",
+      "route": "/employees",
+      "heading": "Сотрудники"
+    },
+    {
+      "login": "employee.r2",
+      "route": "/invitations",
+      "heading": "Приглашения"
+    },
+    {
+      "login": "employee.r2",
+      "route": "/assignments",
+      "heading": "Назначения"
+    },
+    {
+      "login": "employee.r2",
+      "route": "/reviews",
+      "heading": "Отзывы"
+    },
+    {
+      "login": "admin.c",
+      "route": "/",
+      "heading": "Экспертиза начинается с ясности."
+    },
+    {
+      "login": "admin.c",
+      "route": "/catalog",
+      "heading": "Компетенции"
+    },
+    {
+      "login": "analyst.c",
+      "route": "/",
+      "heading": "Вся команда на одном экране."
+    },
+    {
+      "login": "analyst.c",
+      "route": "/analytics",
+      "heading": "Аналитика"
+    },
+    {
+      "login": "analyst.c",
+      "route": "/employees",
+      "heading": "Сотрудники"
+    },
+    {
+      "login": "analyst.c",
+      "route": "/projects",
+      "heading": "Проекты"
+    },
+    {
+      "login": "analyst.c",
+      "route": "/events",
+      "heading": "История событий"
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "started_at": "2026-10-07T21:43:00.055578",
+  "workflow": {
+    "status": "passed",
+    "project_id": "c8b4f28b-e0b6-475a-8521-268af295d75b",
+    "invitation_id": "c61abcee-e092-4355-b142-478ff5af123f",
+    "project_status": "COMPLETED",
+    "review_count": 1,
+    "search_mode_persisted": true,
+    "steps": [
+      "project.create",
+      "position.create",
+      "search",
+      "position.search_mode.persist",
+      "invitation.create",
+      "invitation.respond",
+      "project.transition.ACTIVE",
+      "assignment.complete",
+      "review.create",
+      "project.transition.COMPLETED"
+    ]
+  },
+  "status": "passed",
+  "finished_at": "2026-10-07T21:46:05.366137"
+}

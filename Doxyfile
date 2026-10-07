@@ -1,0 +1,25 @@
+PROJECT_NAME           = "Cross-Team Matcher"
+PROJECT_NUMBER         = 4.1.0
+PROJECT_BRIEF          = "Regional team matching and TRPO laboratory 2"
+OUTPUT_DIRECTORY       = docs/_build/doxygen
+OUTPUT_LANGUAGE        = Russian
+INPUT_ENCODING         = UTF-8
+INPUT                  = app labs/lab2 docs/doxygen-main.dox
+FILE_PATTERNS          = *.py *.h *.cpp *.dox
+RECURSIVE              = YES
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+EXTRACT_STATIC         = YES
+SOURCE_BROWSER         = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION     = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+GENERATE_RTF           = YES
+RTF_HYPERLINKS         = YES
+HAVE_DOT               = NO
+QUIET                  = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_LOGFILE           = docs/_build/doxygen-warnings.log
+PYTHON_DOCSTRING       = NO
+
