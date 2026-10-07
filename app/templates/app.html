@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#202b29"><meta name="color-scheme" content="light">
+  <title>Cross-Team — рабочее пространство</title>
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+{% include 'icons.html' %}
+<a class="skip-link" href="#main">Перейти к содержимому</a>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar" aria-label="Главная навигация">
+    <a class="brand" href="/" aria-label="Cross-Team, главная"><span class="brand-mark">c<span>t</span></span><span>cross<span class="brand-cross">/</span>team<small>ЛЮДИ. ПРОЕКТЫ. СВЯЗИ.</small></span></a>
+    <div class="workspace-switch"><span class="node-dot"></span><div><strong>{{ 'Центральный офис' if node_region|int == 0 else 'Регион ' ~ node_region }}</strong><small>{{ 'Аналитика и справочники' if node_region|int == 0 else 'Рабочее пространство' }}</small></div><span class="node-code">{{ 'C' if node_region|int == 0 else 'R' ~ node_region }}</span></div>
+    <div class="nav-label">ПРОСТРАНСТВО</div>
+    <nav class="main-nav">
+    {% for route, label, icon in [('/', 'Обзор', 'grid'), ('/employees', 'Сотрудники', 'users'), ('/projects', 'Проекты', 'project'), ('/search', 'Поиск специалистов', 'search')] %}
+      {% if route == '/' or (route == '/employees' and ('EMPLOYEE' in user.roles or 'EDITOR' in user.roles or 'MANAGER' in user.roles or 'ANALYST' in user.roles)) or (route == '/projects' and ('MANAGER' in user.roles or 'ANALYST' in user.roles)) or (route == '/search' and 'MANAGER' in user.roles) %}
+      <a href="{{ route }}" data-route="{{ route }}"><svg class="icon"><use href="#i-{{ icon }}"/></svg><span>{{ label }}</span></a>
+      {% endif %}
+    {% endfor %}
+    </nav>
+    <div class="nav-label">СОВМЕСТНАЯ РАБОТА</div>
+    <nav class="main-nav">
+    {% for route, label, icon in [('/invitations', 'Приглашения', 'inbox'), ('/assignments', 'Назначения', 'calendar'), ('/reviews', 'Отзывы', 'star'), ('/events', 'История событий', 'history')] %}
+      {% if (route == '/invitations' and 'EMPLOYEE' in user.roles) or (route in ['/assignments', '/reviews'] and ('EMPLOYEE' in user.roles or 'MANAGER' in user.roles or 'ANALYST' in user.roles)) or (route == '/events' and ('EDITOR' in user.roles or 'MANAGER' in user.roles or 'ANALYST' in user.roles)) %}
+      <a href="{{ route }}" data-route="{{ route }}"><svg class="icon"><use href="#i-{{ icon }}"/></svg><span>{{ label }}</span></a>
+      {% endif %}
+    {% endfor %}
+    {% if node_region|int == 0 %}
+      <div class="nav-label">УПРАВЛЕНИЕ</div>
+      {% if 'CATALOG_ADMIN' in user.roles %}<a href="/catalog" data-route="/catalog"><svg class="icon"><use href="#i-book"/></svg><span>Компетенции</span></a>{% endif %}
+      {% if 'ANALYST' in user.roles %}<a href="/analytics" data-route="/analytics"><svg class="icon"><use href="#i-chart"/></svg><span>Аналитика</span></a>{% endif %}
+    {% endif %}
+    </nav>
+    <div class="sidebar-bottom"><div class="connection-note"><svg class="icon"><use href="#i-nodes"/></svg><span>Одна команда.<br>Разные регионы.</span></div><div class="sidebar-user"><span class="avatar avatar-small">{{ user.login[:2]|upper }}</span><div><strong>{{ user.login }}</strong><small id="user-role">Участник команды</small></div><form action="/logout" method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="icon-button logout" title="Выйти" aria-label="Выйти"><svg class="icon"><use href="#i-logout"/></svg></button></form></div></div>
+  </aside>
+  <button class="sidebar-scrim" id="sidebar-scrim" aria-label="Закрыть навигацию" hidden></button>
+  <div class="main-shell">
+    <header class="topbar"><div class="breadcrumbs"><button class="icon-button mobile-menu" id="menu-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Открыть меню"><svg class="icon"><use href="#i-menu"/></svg></button><span>Рабочее пространство</span><svg class="icon"><use href="#i-chevron"/></svg><strong id="breadcrumb">Обзор</strong></div><div class="topbar-right"><time id="today"></time><button class="icon-button" data-action="reload" title="Обновить данные" aria-label="Обновить данные"><svg class="icon"><use href="#i-refresh"/></svg></button><span class="separator"></span><a class="help-link" href="/docs" title="Документация проекта"><svg class="icon"><use href="#i-book"/></svg><span>Документация</span></a></div></header>
+    <main id="main" class="main-content" tabindex="-1"><div id="view" aria-live="polite"><div class="page-heading"><div class="skeleton skeleton-eyebrow"></div><div class="skeleton skeleton-title"></div></div><div class="stat-grid"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div><div class="skeleton skeleton-panel"></div></div></main>
+    <footer class="app-footer"><span>Cross-Team Matcher</span><span>Команды, которые дополняют друг друга.</span><span>2026</span></footer>
+  </div>
+</div>
+<dialog id="action-dialog" class="modal"><div id="dialog-content"></div></dialog>
+<div class="toast-stack" id="toasts" role="status" aria-live="polite"></div>
+<script id="app-config" type="application/json" nonce="{{ csp_nonce }}">{{ {'user': user, 'nodeRegion': node_region, 'csrfToken': csrf_token, 'page': page}|tojson }}</script>
+<script src="/static/app.js" defer></script>
+</body></html>
