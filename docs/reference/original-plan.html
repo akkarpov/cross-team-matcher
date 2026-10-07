@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cross-Team Matcher — единый план, редакция 4.1</title>
+<style>
+  :root {
+    --ink:#1c1915; --muted:#5c564e; --line:#e4ddd2; --paper:#f6f1e8; --card:#fffdf9;
+    --k:#9a4318; --kbg:#f4e3d6; --l:#2c4c86; --lbg:#e6ebf6; --c:#1d6554; --cbg:#e3f1ec; --a:#6b5420; --abg:#f4edd8;
+  }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; color:var(--ink); background:var(--paper); font:16.5px/1.55 Palatino, "Iowan Old Style", "Times New Roman", serif; }
+  a { color:var(--k); }
+  .wrap { width:min(1080px, calc(100% - 32px)); margin:0 auto; }
+  header { padding:32px 0 18px; }
+  h1 { font-size:clamp(34px, 5vw, 52px); line-height:.96; margin:8px 0 10px; font-weight:560; }
+  h2 { font-size:28px; margin:0 0 10px; font-weight:560; }
+  h3 { font-size:18px; margin:16px 0 6px; }
+  p { margin:0 0 10px; }
+  .kicker { letter-spacing:.14em; text-transform:uppercase; font:12px/1 ui-sans-serif, sans-serif; color:var(--k); margin:0; }
+  .sub { max-width:72ch; color:var(--muted); }
+  nav { position:sticky; top:0; z-index:4; background:rgba(246,241,232,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  nav .wrap { display:flex; gap:14px; overflow:auto; padding:10px 0; }
+  nav a { font:13px/1 ui-sans-serif, sans-serif; color:var(--ink); text-decoration:none; white-space:nowrap; }
+  nav a:hover { color:var(--k); }
+  section { padding:34px 0; border-bottom:1px solid var(--line); }
+  .grid3, .grid2 { display:grid; gap:12px; }
+  .grid3 { grid-template-columns:repeat(3,1fr); }
+  .grid2 { grid-template-columns:1.15fr .85fr; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; }
+  .who { font:11px/1 ui-sans-serif, sans-serif; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+  table { width:100%; border-collapse:collapse; background:var(--card); font-size:14.5px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font:11px/1.3 ui-sans-serif, sans-serif; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+  code, .mono { font:13px/1.45 ui-monospace, Menlo, Consolas, monospace; }
+  pre { background:#221e1a; color:#f6efe4; border-radius:12px; padding:12px 14px; overflow:auto; font:12.5px/1.5 ui-monospace, Menlo, Consolas, monospace; }
+  .callout { border-left:3px solid var(--k); background:var(--kbg); padding:12px 14px; border-radius:0 12px 12px 0; margin:12px 0; }
+  .tag { display:inline-block; border-radius:999px; padding:3px 8px; font:11px/1.3 ui-sans-serif, sans-serif; }
+  .tag.k { background:var(--kbg); color:var(--k); } .tag.l { background:var(--lbg); color:var(--l); }
+  .tag.c { background:var(--cbg); color:var(--c); } .tag.a { background:var(--abg); color:var(--a); }
+  .gantt { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:auto; }
+  .head, .row { display:grid; grid-template-columns:230px 1fr; min-width:880px; }
+  .head { background:#f3eee6; font:12px/1 ui-sans-serif, sans-serif; color:var(--muted); }
+  .days { display:grid; grid-template-columns:repeat(9,1fr); }
+  .days span { padding:8px 4px; border-left:1px solid var(--line); }
+  .name { padding:8px 10px; border-bottom:1px solid var(--line); }
+  .name b { display:block; font-size:14px; }
+  .name small { color:var(--muted); font:11px/1.3 ui-sans-serif, sans-serif; }
+  .track { position:relative; height:44px; border-bottom:1px solid var(--line); border-left:1px solid var(--line);
+    background-image:repeating-linear-gradient(to right, transparent, transparent calc(11.11% - 1px), rgba(28,25,21,.06) calc(11.11% - 1px), rgba(28,25,21,.06) 11.11%); }
+  .bar { position:absolute; top:10px; height:22px; border-radius:7px; color:#fff; font:11px/22px ui-sans-serif, sans-serif; padding:0 6px; white-space:nowrap; }
+  .bar.k { background:var(--k); } .bar.l { background:var(--l); } .bar.c { background:var(--c); } .bar.a { background:var(--a); }
+  .arch { background:#1c1915; color:#f6efe4; border-radius:18px; padding:18px 16px 14px; margin:14px 0; }
+  .arch h3 { color:#f6efe4; margin:0 0 8px; }
+  .arch-legend { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 12px; }
+  .arch-legend span { font:11px/1 ui-sans-serif, sans-serif; border-radius:999px; padding:5px 8px; }
+  .nodes { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; align-items:stretch; }
+  .node { border:1px solid #3c342c; border-radius:14px; padding:12px; background:#26211c; min-height:132px; }
+  .node strong { display:block; font-size:16px; }
+  .node p { color:#d9d0c4; font-size:14px; margin:6px 0; }
+  .own { display:inline-block; margin:2px 4px 0 0; border-radius:999px; padding:2px 7px; font:11px/1.4 ui-sans-serif, sans-serif; }
+  .own.k { background:#9a4318; color:#fff; } .own.l { background:#2c4c86; color:#fff; } .own.c { background:#1d6554; color:#fff; }
+  .flows { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:12px; }
+  .flow { border-radius:12px; padding:8px 10px; font-size:14px; background:#2a241e; border:1px dashed #5c4e40; }
+  .flow b { display:block; }
+  @media (max-width:860px) { .nodes, .flows { grid-template-columns:1fr; } }
+  footer { padding:22px 0 40px; color:var(--muted); font-size:14px; }
+  @media (max-width:860px) { .grid3, .grid2 { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <p class="kicker">МИЭМ НИУ ВШЭ · КСиС · редакция 4.1 · 6 октября 2026 · сдача 14 октября</p>
+    <h1>Cross-Team Matcher. Один план.</h1>
+    <p class="sub">Карпов Арсений, Лебедев Матвей, Кречун Артём. Документ заменяет прошлые отчёты про шлюз G, dblink и 27 таблиц. Источник правды — ТЗ 4.1 и рисунок трёх приложений на трёх PostgreSQL.</p>
+  </div>
+</header>
+<nav>
+  <div class="wrap">
+    <a href="#arch">Архитектура</a>
+    <a href="#model">19 таблиц</a>
+    <a href="#contract">Контракт</a>
+    <a href="#split">Люди</a>
+    <a href="#gantt">Гант</a>
+    <a href="#tasks">Задачи</a>
+    <a href="#files">Файлы</a>
+    <a href="#tests">Приёмка</a>
+    <a href="#docs">Документация</a>
+  </div>
+</nav>
+<main class="wrap">
+<section id="arch">
+  <h2>Архитектура, как на рисунке</h2>
+  <div class="callout">Три приложения, три базы. Приложение R1 говорит только с PostgreSQL R1, центр — только с C, R2 — только с R2. Отдельного шлюза, dblink и списка хостов в коде нет.</div>
+  <div class="arch">
+    <h3>Кто держит модуль</h3>
+    <div class="arch-legend">
+      <span class="own k">Карпов · узлы, FDW, подписки</span>
+      <span class="own l">Лебедев · таблицы, секции, команды</span>
+      <span class="own c">Кречун · три экземпляра одного приложения</span>
+    </div>
+    <div class="nodes">
+      <article class="node">
+        <strong>Приложение R1</strong>
+        <span class="own c">Кречун</span>
+        <p>Один DSN на PostgreSQL R1. Формы профиля, проекта, приглашения и поиска.</p>
+        <strong>PostgreSQL R1</strong>
+        <span class="own k">Карпов</span><span class="own l">Лебедев</span>
+        <p>Основные данные R1. Копии рабочих данных R2. Копии справочников. private и outbox только здесь.</p>
+      </article>
+      <article class="node">
+        <strong>Приложение центра</strong>
+        <span class="own c">Кречун</span>
+        <p>Тот же код. Каталог и analytics, без выбора чужого хоста.</p>
+        <strong>PostgreSQL C</strong>
+        <span class="own k">Карпов</span><span class="own l">Лебедев</span>
+        <p>Основные справочники. Копии данных для аналитики. Отчёт не ходит в живой регион.</p>
+      </article>
+      <article class="node">
+        <strong>Приложение R2</strong>
+        <span class="own c">Кречун</span>
+        <p>Один DSN на PostgreSQL R2. Согласие сотрудника R2 только здесь.</p>
+        <strong>PostgreSQL R2</strong>
+        <span class="own k">Карпов</span><span class="own l">Лебедев</span>
+        <p>Основные данные R2. Копии рабочих данных R1. Копии справочников.</p>
+      </article>
+    </div>
+    <div class="flows">
+      <div class="flow"><b>Репликация справочников · C → R1 и C → R2</b><span class="own k">Карпов, подписка</span> <span class="own l">Лебедев, cat.regions и cat.competencies</span></div>
+      <div class="flow"><b>Данные для аналитики · R1 и R2 → C</b><span class="own k">Карпов, публикация рабочих таблиц</span> <span class="own l">Лебедев, analytics.*</span> <span class="own c">Кречун, экран свежести</span></div>
+      <div class="flow"><b>SQL к основным записям · внешняя секция</b><span class="own k">Карпов, SERVER</span> <span class="own l">Лебедев, global PARTITION BY LIST</span><p>Запись в чужую основную строку. Реплика так не пишется.</p></div>
+      <div class="flow"><b>Копии рабочих данных · R1 ↔ R2</b><span class="own k">Карпов</span> <span class="own l">Лебедев, search.*</span><p>Только чтение. Поиск показывает источник и время. Прямой обмен не зависит от C.</p></div>
+    </div>
+  </div>
+  <table>
+    <thead><tr><th>Узел на рисунке</th><th>Что хранит</th><th>Кто</th></tr></thead>
+    <tbody>
+      <tr><td>PostgreSQL R1</td><td>Основные сотрудники, проекты и назначения владельца R1. Копии рабочих данных R2. Копии справочников.</td><td>Карпов поднимает узел, Лебедев наполняет схему</td></tr>
+      <tr><td>PostgreSQL C</td><td>Основные regions и competencies. Копии рабочих данных для analytics.*</td><td>Карпов подписки, Лебедев представления, Кречун отчёт</td></tr>
+      <tr><td>PostgreSQL R2</td><td>Зеркало R1: свои основные, копии R1, копии справочников.</td><td>те же роли, что у R1</td></tr>
+    </tbody>
+  </table>
+  <p>Правая стрелка рисунка склеена из двух каналов. Их нельзя делать одним. Запись в чужую основную строку — <code>postgres_fdw</code>, секция <code>global.*</code> по <code>owner_region</code>. Копия — логическая подписка, только чтение. Реплика не подтверждает назначение.</p>
+  <p class="sub">На рисунке в регионе написано «сотрудники». По ТЗ там же основные проекты, позиции, приглашения, назначения и отзывы своего владельца. private, accounts и outbox на рисунке нет — их нет и в публикациях. За эти локальные таблицы отвечает Лебедев, в чужой узел их не кладёт Карпов.</p>
+</section>
+
+<section id="model">
+  <h2>19 логических таблиц</h2>
+  <p>Фрагменты, внешние отображения и реплики число не увеличивают. Представления global, search и analytics — не новые сущности.</p>
+  <table>
+    <thead><tr><th>№</th><th>Таблица</th><th>Владелец</th><th>Публикация</th></tr></thead>
+    <tbody>
+      <tr><td>1–2</td><td>regions, competencies</td><td>C</td><td>cat.* во все регионы</td></tr>
+      <tr><td>3</td><td>employees</td><td>регион сотрудника</td><td>рабочая копия в сосед и в C</td></tr>
+      <tr><td>4</td><td>employee_private</td><td>дом</td><td>нет</td></tr>
+      <tr><td>5–7</td><td>employee_competencies, capacity_periods, unavailability_periods</td><td>регион сотрудника</td><td>рабочая копия</td></tr>
+      <tr><td>8–11</td><td>projects, project_positions, position_competencies, invitations</td><td>регион проекта</td><td>рабочая копия</td></tr>
+      <tr><td>12–13</td><td>invitation_responses, assignments</td><td>регион сотрудника</td><td>рабочая копия</td></tr>
+      <tr><td>14</td><td>workflow_events</td><td>владелец изменения</td><td>рабочая копия, без паролей</td></tr>
+      <tr><td>15</td><td>reviews</td><td>регион проекта</td><td>рабочая копия</td></tr>
+      <tr><td>16–19</td><td>accounts, account_roles, outbox, processed_commands</td><td>местный узел</td><td>нет</td></tr>
+    </tbody>
+  </table>
+  <p>Ключ основной таблицы — <code>(owner_region, id)</code> и CHECK региона. У родителя global нет PK и UNIQUE: внешняя секция не обещает глобальную уникальность. Межрегиональный идентификатор всегда идёт с регионом владельца.</p>
+</section>
+
+<section id="contract">
+  <h2>Контракт 4.1</h2>
+  <p>Обычный SQL к <code>global.*</code> для своих и чужих основных строк. Поиск — только <code>search.*</code>. Межрегиональный процесс — команда, не адрес.</p>
+  <pre>command_id uuid
+kind text
+source_region smallint
+target_region smallint
+actor_id uuid          -- из сессии экземпляра, не из браузера
+payload_hash sha256
+payload jsonb</pre>
+  <p>Квитанция в <code>processed_commands</code> пишется той же транзакцией, что и бизнес-изменение. Повтор того же <code>command_id</code> с тем же source, kind и hash возвращает сохранённый result. Другой hash — <code>command_conflict</code>. Одной транзакцией нельзя менять свой outbox и данные чужого владельца: 2PC через postgres_fdw в PostgreSQL 17 нет.</p>
+  <table>
+    <thead><tr><th>kind</th><th>Кто фиксирует</th><th>Смысл</th><th>Связан с</th></tr></thead>
+    <tbody>
+      <tr><td>invitation.deliver</td><td>регион сотрудника</td><td>снимок условий, часы не заняты</td><td>Т04</td></tr>
+      <tr><td>invitation.cancel</td><td>регион сотрудника</td><td>терминальная отметка, поздняя оферта с тем же id не оживает</td><td>Т06</td></tr>
+      <tr><td>invitation.respond</td><td>регион сотрудника</td><td>только сам сотрудник; ACCEPTED проверяет календарь</td><td>Т03, Т05</td></tr>
+      <tr><td>assignment.confirm</td><td>регион проекта</td><td>квитанция согласия, одна открытая оферта на позицию</td><td>Т06</td></tr>
+      <tr><td>assignment.cancel</td><td>регион сотрудника</td><td>история не удаляется, часы снимаются отменой</td><td>Т06</td></tr>
+      <tr><td>terms.replace</td><td>регион сотрудника</td><td>новые условия требуют нового согласия, старые часы не удваиваются</td><td>Т07</td></tr>
+      <tr><td>review.open</td><td>регион проекта</td><td>после COMPLETED; rating 1–5; comment 1–2000; один отзыв автора</td><td>Т08</td></tr>
+    </tbody>
+  </table>
+  <p>Ошибки: <code>forbidden</code>, <code>payload_invalid</code>, <code>owner_unavailable</code>, <code>stale_replica</code>, <code>command_conflict</code>, <code>capacity_exceeded</code>, <code>terms_mismatch</code>, <code>review_not_allowed</code>, <code>version_conflict</code>. На испытании недоступный владелец сообщается до 10 секунд. Это критерий, не измеренный результат.</p>
+  <p class="sub">Файлы <code>contracts/operations.json</code> и <code>contracts/errors.json</code> — те же имена. Заморозка 7 октября. Версия 4.2 только с согласия троих.</p>
+</section>
+
+<section id="split">
+  <h2>Кто за что отвечает</h2>
+  <div class="grid3">
+    <article class="card"><p class="who">Карпов · стенд</p><h3>Узлы, FDW, подписки</h3><p>compose с pg_c, pg_r1, pg_r2 и тремя экземплярами одного приложения. SERVER и USER MAPPING. Публикации cat и рабочих таблиц. Standby, бэкап, CI, Sphinx. Не пишет формы и не кладёт хост в код.</p></article>
+    <article class="card"><p class="who">Лебедев · SQL</p><h3>19 таблиц и протокол</h3><p>Секции global, календарь через schedule_version, outbox и квитанции, search и analytics. Не публикует private и не открывает второй DSN.</p></article>
+    <article class="card"><p class="who">Кречун · приложение</p><h3>Один код, свои экраны</h3><p>Роли, приглашение, согласие, отзыв, баннер устаревшей копии. SQL только к global, search, analytics и private своего узла. Дизайн не из архива Department Control Center.</p></article>
+  </div>
+</section>
+
+<section id="gantt">
+  <h2>Гант 6–14 октября</h2>
+  <div class="gantt">
+    <div class="head"><div style="padding:8px 10px">Полоса</div><div class="days"><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span></div></div>
+    <div class="row"><div class="name"><b><a href="#t1">01 Контракт</a></b><small>все · блокер</small></div><div class="track"><div class="bar a" style="left:0;width:18%">json</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t2">02 Три узла</a></b><small>Карпов</small></div><div class="track"><div class="bar k" style="left:11%;width:22%">compose</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t3">03 Секции 1–7</a></b><small>Лебедев</small></div><div class="track"><div class="bar l" style="left:11%;width:22%">люди</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t4">04 Оболочка</a></b><small>Кречун</small></div><div class="track"><div class="bar c" style="left:11%;width:22%">один DSN</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t5">05 Подписки</a></b><small>Карпов</small></div><div class="track"><div class="bar k" style="left:33%;width:16%">C и R↔R</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t6">06 Проекты</a></b><small>Лебедев</small></div><div class="track"><div class="bar l" style="left:33%;width:16%">8–11</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t7">07 Экраны</a></b><small>Кречун</small></div><div class="track"><div class="bar c" style="left:33%;width:28%">формы</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t8">08 Календарь</a></b><small>Лебедев</small></div><div class="track"><div class="bar l" style="left:50%;width:18%">outbox</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t9">09 Стыковка</a></b><small>Кречун</small></div><div class="track"><div class="bar c" style="left:61%;width:16%">живой SQL</div></div></div>
+    <div class="row"><div class="name"><b><a href="#t10">10 Приёмка</a></b><small>все</small></div><div class="track"><div class="bar a" style="left:72%;width:27%">Т09–Т16</div></div></div>
+  </div>
+  <p class="sub">02, 03 и 04 стартуют только после 01. 05 ждёт 03. 08 ждёт 06. 09 ждёт 05 и 08. 10 ждёт 09.</p>
+</section>
+
+<section id="tasks">
+  <h2>Задачи ганта, подробно</h2>
+
+  <article class="card task" id="t1">
+    <p class="who">01 · 6–7 октября · все · блокер</p>
+    <h3>Заморозить контракт</h3>
+    <p>Пока json не в main, Лебедев не называет команды по-своему, Кречун не рисует лишний экран выбора сервера.</p>
+    <p>Сделать: семь kind из <a href="#contract">контракта</a>, девять кодов ошибок, запрет actor из браузера, запрет второго DSN. Карпов пишет файлы, двое ставят ревью в тот же день.</p>
+    <p>Готово, когда оба json совпадают с таблицей команд и ссылка на них есть в <a href="#docs">docs/operations.rst</a>.</p>
+  </article>
+
+  <article class="card task" id="t2">
+    <p class="who">02 · 7–8 октября · Карпов</p>
+    <h3>Три PostgreSQL и три приложения</h3>
+    <p>Как на рисунке: app_r1 → pg_r1, app_c → pg_c, app_r2 → pg_r2. Отдельные тома и адреса. wal_level=logical. Пароли только в env, не в репозитории.</p>
+    <p>Файлы: <code>deploy/compose.yml</code>, <code>deploy/.env.example</code>, <code>deploy/postgres/servers.sql</code>. В образе приложения нет переменной с адресом чужого региона.</p>
+    <p>Готово, когда каждый экземпляр открывает только свой узел, а SERVER для чужой секции создан миграцией, не клиентом.</p>
+  </article>
+
+  <article class="card task" id="t3">
+    <p class="who">03 · 7–8 октября · Лебедев</p>
+    <h3>Справочники, люди, календарь</h3>
+    <p>Таблицы 1–7. <code>global.employees</code> PARTITION BY LIST (owner_region). На R1 своя секция r1_data.employees и внешняя route.employees_r2. employee_private не прикрепляется к global.</p>
+    <p>Файлы: <code>sql/cat/01_regions_competencies.sql</code>, <code>sql/global/01_employees.sql</code>, <code>sql/global/02_attach_local.sql</code>, <code>sql/private/02_employee_private.sql</code>, <code>sql/working/01_calendar.sql</code>. На каждую таблицу COMMENT ON.</p>
+    <p>Готово, когда интервалы одного сотрудника не пересекаются, а отсутствие периода означает отсутствие подтверждённой доступности.</p>
+  </article>
+
+  <article class="card task" id="t4">
+    <p class="who">04 · 7–8 октября · Кречун</p>
+    <h3>Один код и один DSN</h3>
+    <p>Оболочка, не копия Department Control Center. Светлая бумага, один медный акцент. Роли: сотрудник, редактор, менеджер, администратор каталога, аналитик. Регион экземпляра задаёт окружение, не пользователь.</p>
+    <p>Файлы: <code>app/db.py</code>, <code>app/config.py</code>, <code>design/tokens.css</code>, <code>app/templates/base.html</code>, <code>app/templates/login.html</code>. Тест падает, если в репозитории есть второй DSN или строка r1_data.</p>
+  </article>
+
+  <article class="card task" id="t5">
+    <p class="who">05 · 8–9 октября · Карпов · после 03</p>
+    <h3>Потоки рисунка</h3>
+    <p>C публикует только cat.regions и cat.competencies. R1 публикует свои r1_data рабочие таблицы в R2 и в C. R2 — симметрично. Копии, private, accounts и outbox в публикацию не входят. publish_via_partition_root остаётся false.</p>
+    <p>Файлы: <code>replication/c_catalog.sql</code>, <code>replication/r1_working.sql</code>, <code>replication/r2_working.sql</code>, <code>replication/check_lag.sql</code>.</p>
+    <p>Готово, когда навык с C доезжает до R2, а вставка в копию на R1 отклоняется правами.</p>
+  </article>
+
+  <article class="card task" id="t6">
+    <p class="who">06 · 8–9 октября · Лебедев</p>
+    <h3>Проект, позиция, оферта</h3>
+    <p>Таблицы 8–11. Статусы проекта: FORMING, READY, ACTIVE, CANCELLING, CANCELLED, COMPLETED. Позиций 1–10. Все компетенции обязательны. Одна открытая оферта держит позицию и не резервирует часы сотрудника.</p>
+    <p>Файлы: <code>sql/working/02_projects.sql</code>, <code>sql/working/03_invitations.sql</code>. terms_snapshot и terms_hash неизменны после отправки.</p>
+  </article>
+
+  <article class="card task" id="t7">
+    <p class="who">07 · 8–10 октября · Кречун</p>
+    <h3>Экраны процесса</h3>
+    <p>Каталог только у администратора C. Профиль и календарь — у редактора своего региона. Проект и поиск — у менеджера, приоритет своего региона до страницы. Входящие приглашения — у сотрудника, менеджер не нажимает «согласен» за него. Отзыв скрыт, пока нет квитанции завершения. Пустая выдача не маскирует недоступный узел.</p>
+    <p>Файлы: <code>app/templates/catalog.html</code>, <code>profile.html</code>, <code>project.html</code>, <code>search.html</code>, <code>invite.html</code>, <code>review.html</code>, <code>analytics.html</code>.</p>
+  </article>
+
+  <article class="card task" id="t8">
+    <p class="who">08 · 10–11 октября · Лебедев · после 06</p>
+    <h3>Назначение, отзыв, команды</h3>
+    <p>Таблицы 12–19. employees.schedule_version растёт на каждой мутации календаря. Два подтверждения на последние часы сериализуются на владельце сотрудника. CONFLICT не освобождает часы. Отзыв после COMPLETED, правка пишет workflow_events.</p>
+    <p>Файлы: <code>sql/working/04_assignments.sql</code>, <code>sql/working/05_reviews.sql</code>, <code>sql/process/outbox.sql</code>, <code>sql/process/processed_commands.sql</code>, <code>sql/search/employee_profiles.sql</code>, <code>sql/analytics/reports.sql</code>, <code>tests/sql/test_capacity.sql</code>, <code>tests/sql/test_dedup.sql</code>.</p>
+  </article>
+
+  <article class="card task" id="t9">
+    <p class="who">09 · 11–12 октября · Кречун · после 05 и 08</p>
+    <h3>Стыковка с живым SQL</h3>
+    <p>Те же шаблоны, уже против секций и команд. Приложение не выбирает хост: EXPLAIN на R1 для owner_region = 2 показывает внешнюю секцию. Баннер копии берёт время из search, не из выдуманной метки. Аналитик на C видит статус подписки.</p>
+  </article>
+
+  <article class="card task" id="t10">
+    <p class="who">10 · 12–14 октября · все</p>
+    <h3>Отказы и протокол</h3>
+    <p>Карпов гасит C и R2, снимает EXPLAIN, гоняет восстановление. Лебедев подтверждает, что дамп чужого узла не содержит private и хешей. Кречун проводит Т01–Т08 и Т17 с экрана. В <code>docs/protocol.md</code> только факты: версии, SQL, UUID, лаг, время. Пустые p95 не писать.</p>
+    <p>Файлы: <code>tests/stand/test_explain_fdw.sh</code>, <code>test_c_down.sh</code>, <code>test_owner_down.sh</code>, <code>test_lost_response.sh</code>, <code>deploy/backup/backup.sh</code>, <code>deploy/backup/restore.sh</code>, <code>deploy/failover/promote_r1.sh</code>.</p>
+  </article>
+</section>
+
+<section id="files">
+  <h2>Дерево и чужие файлы</h2>
+  <pre>contracts/operations.json          01, все ревьюят
+contracts/errors.json              01
+deploy/compose.yml                 02 Карпов
+deploy/postgres/servers.sql        02 Карпов
+sql/cat/                           03 Лебедев
+sql/global/                        03 Лебедев
+sql/private/                       03 Лебедев
+sql/working/                       03, 06, 08 Лебедев
+sql/process/                       08 Лебедев
+sql/search/  sql/analytics/        08 Лебедев
+replication/                       05 Карпов
+app/db.py  app/templates/          04, 07, 09 Кречун
+design/tokens.css                  04 Кречун
+docs/                              каркас Карпов, текст автора операции
+tests/sql/                         Лебедев
+tests/stand/                       Карпов</pre>
+  <p>Ветки <code>karpov/stand</code>, <code>lebedev/sql</code>, <code>krechun/ui</code>. Каталог sql/gateway не создавать. Строка r1_data в приложении — поломка контракта, даже если экран работает.</p>
+</section>
+
+<section id="tests">
+  <h2>Приёмка, связанная с задачами</h2>
+  <table>
+    <thead><tr><th>Тест</th><th>Что доказывает</th><th>Откуда</th></tr></thead>
+    <tbody>
+      <tr><td>Т01</td><td>чужой actor, регион и проект не дают права</td><td>04, 09</td></tr>
+      <tr><td>Т02</td><td>нет одного навыка — нет кандидата</td><td>07, 08</td></tr>
+      <tr><td>Т03–Т05</td><td>календарь, отказ без списания, два подтверждения без превышения</td><td>08</td></tr>
+      <tr><td>Т06–Т08</td><td>принятие против отмены, новая версия условий, отзыв</td><td>08, 09</td></tr>
+      <tr><td>Т17</td><td>три режима поиска, приоритет своего региона до страницы</td><td>07</td></tr>
+      <tr><td>Т09</td><td>SQL с R1 меняет основную R2, EXPLAIN показывает секцию</td><td>02, 05, 10</td></tr>
+      <tr><td>Т10</td><td>правка профиля и отзыва доезжает, копия не пишется</td><td>05</td></tr>
+      <tr><td>Т11</td><td>C выключен, местная запись и R1↔R2 живы</td><td>10</td></tr>
+      <tr><td>Т12–Т13</td><td>поиск по устаревшей копии, назначение не подтверждается; повтор command_id без дубля</td><td>08, 10</td></tr>
+      <tr><td>Т14–Т16</td><td>копия не гоняет бизнес-триггер, восстановление, p95 только измеренный</td><td>10</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="docs">
+  <h2>Документация</h2>
+  <p>Sphinx с autodoc — аналог Doxygen для кода приложения. Схема — COMMENT ON и <code>docs/export_schema.py</code>. Сборка <code>make docs</code> с 7 октября, иначе PR без описания команды не сливается. Doxygen поверх sql/ можно повесить вторым проходом, основной сайт — Sphinx.</p>
+  <p>Презентация к защите отдельно: чёрный текст, белый фон, кегль не меньше 18. Этот файл на один слайд не переносить.</p>
+</section>
+</main>
+<footer><div class="wrap">Cross-Team Matcher · редакция 4.1 · Карпов, Лебедев, Кречун · сдача 14 октября 2026. Прошлые HTML про G и 27 таблиц не использовать.</div></footer>
+</body>
+</html>

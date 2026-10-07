@@ -1,0 +1,23 @@
+{
+  "version": "4.1",
+  "identity": "actor_id is established by the local authenticated application session",
+  "naming": "operations below name business capabilities from the planning document; transport_kinds lists actual SQL wire kinds",
+  "transport_kinds": {
+    "OFFER": "Immutable delivery, including a replacement offer linked to the previous invitation",
+    "CANCEL": "Terminal cancellation of an invitation or its assignment",
+    "COMPLETE": "Manager request for the employee owner to complete an accepted assignment",
+    "RESULT": "Authoritative decision/assignment receipt returned to the project owner"
+  },
+  "envelope": ["command_id", "kind", "source_region", "target_region", "actor_id", "payload_hash", "payload"],
+  "operations": {
+    "invitation.deliver": "Employee owner stores immutable offer; hours remain free",
+    "invitation.cancel": "Employee owner records a terminal cancellation, including reordered delivery",
+    "invitation.respond": "Local employee accepts or declines their own offer; acceptance checks every workday",
+    "assignment.confirm": "Project owner records authoritative decision receipt",
+    "assignment.cancel": "Employee owner ends participation without deleting history",
+    "terms.replace": "A new offer version requires new consent and replaces old capacity atomically",
+    "review.open": "Project owner receives authoritative completion receipt before permitting a review"
+  },
+  "idempotency": "Same command_id/source/kind/payload_hash returns saved result; different contents are command_conflict",
+  "transactions": "Remote receipt and business mutation commit together; local outbox acknowledgment is a separate transaction"
+}

@@ -1,0 +1,14 @@
+{
+  "version": "4.1",
+  "errors": {
+    "forbidden": "Actor has no permission for this object or operation",
+    "payload_invalid": "Input violates the operation contract",
+    "owner_unavailable": "The authoritative owner cannot commit the operation",
+    "stale_replica": "Local search copy is unavailable or not ready",
+    "command_conflict": "Command identifier was reused with different contents",
+    "capacity_exceeded": "At least one working day has insufficient capacity",
+    "terms_mismatch": "Offer version or immutable terms hash differs",
+    "review_not_allowed": "Authoritative completion receipt or project permission is missing",
+    "version_conflict": "Concurrent update requires a fresh object version"
+  }
+}

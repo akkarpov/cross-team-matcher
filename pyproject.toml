@@ -1,0 +1,11 @@
+[project]
+name = "cross-team-matcher"
+version = "4.1.0"
+description = "Regional team matching on a federated PostgreSQL database"
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = ["stand: requires running three-node PostgreSQL stand"]
+
