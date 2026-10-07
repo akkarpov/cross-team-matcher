@@ -17,6 +17,7 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -28,8 +29,10 @@ jobs:
       - run: python -m pip install -r requirements-dev.txt
       - run: python -m pytest tests/test_auth.py tests/test_architecture.py tests/test_freshness.py -q
       - run: python scripts/build_pages.py
-      - run: python -m playwright install --with-deps chromium
-      - run: python scripts/check_pages.py
+      - name: Check report in the runner's installed Chrome
+        run: |
+          CHROME_EXECUTABLE="$(command -v google-chrome)"
+          python scripts/check_pages.py --browser-executable "$CHROME_EXECUTABLE"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
