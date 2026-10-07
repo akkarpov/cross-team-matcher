@@ -1,0 +1,54 @@
+{
+  "version": "4.1.0",
+  "report_date": "7 октября 2026",
+  "repository": "https://github.com/akkarpov/cross-team-matcher",
+  "team": [
+    {
+      "id": "karpov", "initials": "АК", "name": "Арсений Карпов", "role": "Инфраструктура и эксплуатация", "short": "Инфраструктура", "color": "blue",
+      "description": "Три самостоятельных узла PostgreSQL, маршрутизация к владельцам данных и доставка копий между регионами.",
+      "areas": ["Стенд C / R1 / R2 и один DSN на экземпляр", "postgres_fdw, публикации и подписки", "Резервное копирование, восстановление и CI"],
+      "files": ["replication/bootstrap.py", "deploy/compose.yaml", "scripts/local.py", "scripts/backup.py", "tests/stand/test_distributed.py"],
+      "checks": "T09–T16 · маршрутизация, репликация, отказы и восстановление"
+    },
+    {
+      "id": "lebedev", "initials": "МЛ", "name": "Матвей Лебедев", "role": "Модель данных и SQL", "short": "SQL и протокол", "color": "purple",
+      "description": "Правила подбора и назначения живут в базе владельца: от календаря сотрудника до атомарной квитанции команды.",
+      "areas": ["19 логических отношений и секции global", "Календарь, согласие, назначения и отзывы", "Outbox, дедупликация, search и analytics"],
+      "files": ["sql/00_schema.sql", "sql/01_workflow.sql", "sql/02_views.sql", "contracts/db-api.md", "tests/sql/test_workflow.py"],
+      "checks": "T01–T08, T17 · права, навыки, календарь и переходы состояний"
+    },
+    {
+      "id": "krechun", "initials": "АК", "name": "Артём Кречун", "role": "Приложение и интерфейс", "short": "Приложение", "color": "orange",
+      "description": "Один код приложения для трёх узлов. Каждая роль видит свой рабочий процесс и состояние данных.",
+      "areas": ["FastAPI, сессии, CSRF и серверные права", "Пять ролей и адаптивные экраны", "Поиск, приглашения, согласие и свежесть копий"],
+      "files": ["app/main.py", "app/repository.py", "app/templates/app.html", "app/static/app.js", "scripts/browser_check.py"],
+      "checks": "HTTP и Playwright · пять ролей, мобильный экран, полный процесс"
+    }
+  ],
+  "milestones": [
+    {"id": "01", "owner": "all", "label": "Основание", "title": "ТЗ 4.1 и общий контракт", "text": "Зафиксированы три приложения, один DSN на экземпляр, границы владельцев и личное согласие сотрудника. Согласованы команды и девять бизнес-ошибок.", "files": ["contracts/operations.json", "contracts/errors.json", "docs/assessment.md"]},
+    {"id": "02", "owner": "karpov", "label": "Инфраструктура", "title": "Три узла вместо единого шлюза", "text": "Подготовлены локальный стенд и Compose. Установщик создаёт FDW-секции, роли, публикации и подписки. Прямой обмен регионов не зависит от центра.", "files": ["scripts/local.py", "replication/bootstrap.py", "deploy/compose.yaml"]},
+    {"id": "03", "owner": "lebedev", "label": "Данные", "title": "Схема, календарь и поиск", "text": "Созданы 19 логических отношений, локальные закрытые данные, секции global, представления search и analytics. Поиск проверяет все навыки и каждый рабочий день до пагинации.", "files": ["sql/00_schema.sql", "sql/02_views.sql", "tests/sql/test_workflow.py"]},
+    {"id": "04", "owner": "krechun", "label": "Интерфейс", "title": "Пять ролей, один рабочий процесс", "text": "Добавлены вход, профили, проекты, подбор, входящие предложения, назначения, отзывы и аналитика. Сервер получает личность из сессии, а не из формы.", "files": ["app/main.py", "app/auth.py", "app/templates/app.html", "app/static/app.css"]},
+    {"id": "05", "owner": "lebedev", "label": "Согласованность", "title": "Надёжное межрегиональное назначение", "text": "Реализованы исходящая очередь, атомарные квитанции и повторная доставка. schedule_version защищает последние свободные часы. Новые условия требуют нового согласия.", "files": ["sql/01_workflow.sql", "app/worker.py", "contracts/operations.json"]},
+    {"id": "06", "owner": "all", "label": "Интеграция", "title": "Исправления по результатам испытаний", "text": "Устранены коллизии слотов, утечки приватных полей квитанций, позднее завершение после отмены, потеря режима поиска и переполнение мобильной сетки.", "files": ["sql/03_acceptance_guards.sql", "sql/04_receipt_privacy_and_terminal_commands.sql", "docs/protocol.md"]},
+    {"id": "07", "owner": "all", "label": "Поставка 4.1.0", "title": "Приёмка, документация и лабораторная", "text": "Сохранены результаты SQL, HTTP, браузерных и отказных проверок. Подготовлены Sphinx, Doxygen, C++-пример и воспроизводимый Git-сценарий с конфликтом и revert.", "files": ["docs/evidence/acceptance-summary.json", "docs/protocol.md", "scripts/lab2_git_demo.py", "labs/lab2/Employee.h"]}
+  ],
+  "tasks": [
+    {"id": "01", "owner": "all", "title": "Зафиксировать контракт", "plan": "6–7 окт.", "result": "7 бизнес-возможностей, 4 транспортных типа и 9 кодов ошибок", "file": "contracts/operations.json"},
+    {"id": "02", "owner": "karpov", "title": "Три PostgreSQL и три приложения", "plan": "7–8 окт.", "result": "Локальный стенд проверен; Compose подготовлен", "file": "scripts/local.py"},
+    {"id": "03", "owner": "lebedev", "title": "Справочники, люди, календарь", "plan": "7–8 окт.", "result": "Секции, закрытые контакты, доступность и отсутствия", "file": "sql/00_schema.sql"},
+    {"id": "04", "owner": "krechun", "title": "Оболочка и один DSN", "plan": "7–8 окт.", "result": "Пять ролей, сессии, CSRF и локальное подключение", "file": "app/config.py"},
+    {"id": "05", "owner": "karpov", "title": "Подписки и маршрутизация", "plan": "8–9 окт.", "result": "C → R1/R2, R1 ↔ R2, R1/R2 → C; FDW к владельцам", "file": "replication/bootstrap.py"},
+    {"id": "06", "owner": "lebedev", "title": "Проекты, позиции и оферты", "plan": "8–9 окт.", "result": "Требования к позиции и неизменяемый снимок условий", "file": "sql/01_workflow.sql"},
+    {"id": "07", "owner": "krechun", "title": "Экраны процесса", "plan": "8–10 окт.", "result": "От создания проекта до отзыва; desktop и mobile", "file": "app/templates/app.html"},
+    {"id": "08", "owner": "lebedev", "title": "Назначения, отзывы, команды", "plan": "10–11 окт.", "result": "Защита календаря, outbox, квитанции и дедупликация", "file": "sql/01_workflow.sql"},
+    {"id": "09", "owner": "krechun", "title": "Интеграция с живым SQL", "plan": "11–12 окт.", "result": "Полный браузерный сценарий R1 → R2 и баннер свежести", "file": "scripts/browser_check.py"},
+    {"id": "10", "owner": "all", "title": "Приёмка и протокол", "plan": "12–14 окт.", "result": "Сохранены измерения, восстановление 98 таблиц и T09–T16", "file": "docs/protocol.md"}
+  ],
+  "screenshots": [
+    {"file": "manager-overview-desktop.png", "title": "Рабочее место менеджера", "text": "Проекты, команда и состояние данных в одном обзоре."},
+    {"file": "manager-search-results-desktop.png", "title": "Подбор по навыкам и доступности", "text": "Кандидаты из своего и соседнего региона с источником данных."},
+    {"file": "manager-project-detail-desktop.png", "title": "Проект и его участники", "text": "Позиции, приглашения и подтверждённые назначения."}
+  ]
+}
