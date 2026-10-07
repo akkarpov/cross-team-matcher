@@ -30,6 +30,12 @@ jobs:
       - run: python scripts/build_pages.py
       - run: python -m playwright install --with-deps chromium
       - run: python scripts/check_pages.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-browser-checks
+          path: .local/test-results/pages
+          if-no-files-found: ignore
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist/pages

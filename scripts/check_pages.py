@@ -116,7 +116,10 @@ def main():
             for width in (1440, 768, 390, 320):
                 page.set_viewport_size({"width": width, "height": 1050 if width > 760 else 844})
                 page.evaluate("window.scrollTo(0, 0)")
-                assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), f"Overflow at {width}px"
+                if not page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"):
+                    page.screenshot(path=str(EVIDENCE / f"overflow-{width}.png"), full_page=True)
+                    report["overflow"] = page.evaluate("""[...document.querySelectorAll('h1,h2,h3,p,a,button,code')].filter(e => e.checkVisibility()).map(e => { const range = document.createRange(); range.selectNodeContents(e); return {tag:e.tagName, text:e.textContent.slice(0,100), right:range.getBoundingClientRect().right}; }).filter(e => e.right > innerWidth + 1)""")
+                    raise AssertionError(f"Overflow at {width}px: {report['overflow']}")
                 if width in (1440, 390):
                     page.screenshot(path=str(EVIDENCE / f"report-{width}-viewport.png"))
                     page.screenshot(path=str(EVIDENCE / f"report-{width}.png"), full_page=True)
