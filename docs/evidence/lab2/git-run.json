@@ -1,0 +1,415 @@
+{
+  "status": "PASS",
+  "started_utc": "2026-10-08T11:02:25.368849+00:00",
+  "finished_utc": "2026-10-08T11:02:31.620121+00:00",
+  "git_version": "git version 2.42.0.windows.2",
+  "scope": "isolated local bare remote + two clones; synthetic lab identity",
+  "steps_completed": 19,
+  "before_merge": "72d53b8e132e90cafe5bb171e8cf7194a3f9a19f",
+  "bad_merge": "d7b5f84a571f602c08e22c3fdcbb6fa0b037b40e",
+  "after_reset": "72d53b8e132e90cafe5bb171e8cf7194a3f9a19f",
+  "final_head": "233ed6083405f47132d186500c32858bf4522082",
+  "graph": "*   233ed60 (HEAD -> main, origin/main) Merge the tested capacity feature\n|\\  \n| * c214af1 Correct subtraction and cover overload\n| | * d7b5f84 (tag: lab-bad-merge) Resolve conflict incorrectly for demonstration\n| |/| \n|/|/  \n| * e81d25d Introduce the deliberate capacity defect\n* | 72d53b8 Clamp negative capacity in main\n|/  \n* 30cd5f8 Document the teaching example\n* a704462 Initial capacity model",
+  "records": [
+    {
+      "step": "setup",
+      "cwd": ".",
+      "command": "git --version",
+      "stdout": "git version 2.42.0.windows.2",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": ".",
+      "command": "git init --bare --initial-branch=main origin.git",
+      "stdout": "Initialized empty Git repository in D:/laptop/cross-team-matcher/.local/lab2-git/20261008T110225368849/origin.git/",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "1",
+      "cwd": ".",
+      "command": "git clone <lab>\\origin.git author",
+      "stdout": "",
+      "stderr": "Cloning into 'author'...\nwarning: You appear to have cloned an empty repository.\ndone.",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git config user.name Lab Participant",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git config user.email lab@example.invalid",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git add .",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git commit -m Initial capacity model",
+      "stdout": "[main (root-commit) a704462] Initial capacity model\n 2 files changed, 5 insertions(+)\n create mode 100644 budget.py\n create mode 100644 test_budget.py",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git add README.txt",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git commit -m Document the teaching example",
+      "stdout": "[main 30cd5f8] Document the teaching example\n 1 file changed, 1 insertion(+)\n create mode 100644 README.txt",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "setup",
+      "cwd": "author",
+      "command": "git push -u origin main",
+      "stdout": "branch 'main' set up to track 'origin/main'.",
+      "stderr": "To <lab>\\origin.git\n * [new branch]      main -> main",
+      "exit_code": 0
+    },
+    {
+      "step": "1",
+      "cwd": ".",
+      "command": "git clone <lab>\\origin.git reviewer",
+      "stdout": "",
+      "stderr": "Cloning into 'reviewer'...\ndone.",
+      "exit_code": 0
+    },
+    {
+      "step": "2",
+      "cwd": "author",
+      "command": "git pull --ff-only",
+      "stdout": "Already up to date.",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "3",
+      "cwd": "author",
+      "command": "git diff HEAD^",
+      "stdout": "diff --git a/README.txt b/README.txt\nnew file mode 100644\nindex 0000000..1a0eb98\n--- /dev/null\n+++ b/README.txt\n@@ -0,0 +1 @@\n+Lab 2: isolated capacity model, not the production repository.",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "4",
+      "cwd": "author",
+      "command": "git checkout -b bad-feature",
+      "stdout": "",
+      "stderr": "Switched to a new branch 'bad-feature'",
+      "exit_code": 0
+    },
+    {
+      "step": "5",
+      "cwd": "author",
+      "command": "git commit -am Introduce the deliberate capacity defect",
+      "stdout": "[bad-feature e81d25d] Introduce the deliberate capacity defect\n 1 file changed, 1 insertion(+), 1 deletion(-)",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "5",
+      "cwd": "author",
+      "command": "git push -u origin bad-feature",
+      "stdout": "branch 'bad-feature' set up to track 'origin/bad-feature'.",
+      "stderr": "To <lab>\\origin.git\n * [new branch]      bad-feature -> bad-feature",
+      "exit_code": 0
+    },
+    {
+      "step": "6",
+      "cwd": "author",
+      "command": "git checkout main",
+      "stdout": "Your branch is up to date with 'origin/main'.",
+      "stderr": "Switched to branch 'main'",
+      "exit_code": 0
+    },
+    {
+      "step": "7",
+      "cwd": "author",
+      "command": "git pull --ff-only",
+      "stdout": "Already up to date.",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "7",
+      "cwd": "author",
+      "command": "git commit -am Clamp negative capacity in main",
+      "stdout": "[main 72d53b8] Clamp negative capacity in main\n 1 file changed, 1 insertion(+), 1 deletion(-)",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "7",
+      "cwd": "author",
+      "command": "git rev-parse HEAD",
+      "stdout": "72d53b8e132e90cafe5bb171e8cf7194a3f9a19f",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "8",
+      "cwd": "author",
+      "command": "git merge --no-ff bad-feature",
+      "stdout": "Auto-merging budget.py\nCONFLICT (content): Merge conflict in budget.py\nAutomatic merge failed; fix conflicts and then commit the result.",
+      "stderr": "",
+      "exit_code": 1
+    },
+    {
+      "step": "8",
+      "cwd": "author",
+      "command": "git status --short",
+      "stdout": "UU budget.py",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "8",
+      "cwd": "author",
+      "command": "git diff",
+      "stdout": "diff --cc budget.py\nindex 6dc0cb0,d330bd4..0000000\n--- a/budget.py\n+++ b/budget.py\n@@@ -1,2 -1,2 +1,6 @@@\n  def remaining(capacity, assigned):\n++<<<<<<< HEAD\n +    return max(0, capacity - assigned)\n++=======\n+     return capacity + assigned\n++>>>>>>> bad-feature",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "9",
+      "cwd": "author",
+      "command": "git add budget.py",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "9",
+      "cwd": "author",
+      "command": "git commit -m Resolve conflict incorrectly for demonstration",
+      "stdout": "[main d7b5f84] Resolve conflict incorrectly for demonstration",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "9",
+      "cwd": "author",
+      "command": "git rev-parse HEAD",
+      "stdout": "d7b5f84a571f602c08e22c3fdcbb6fa0b037b40e",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "10",
+      "cwd": "author",
+      "command": "git diff HEAD^",
+      "stdout": "diff --git a/budget.py b/budget.py\nindex 6dc0cb0..d330bd4 100644\n--- a/budget.py\n+++ b/budget.py\n@@ -1,2 +1,2 @@\n def remaining(capacity, assigned):\n-    return max(0, capacity - assigned)\n+    return capacity + assigned",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "10",
+      "cwd": "author",
+      "command": "python -B test_budget.py",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<lab>\\author\\test_budget.py\", line 2, in <module>\n    assert remaining(40, 24) == 16\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError",
+      "exit_code": 1
+    },
+    {
+      "step": "10",
+      "cwd": "author",
+      "command": "git tag lab-bad-merge d7b5f84a571f602c08e22c3fdcbb6fa0b037b40e",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "11",
+      "cwd": "author",
+      "command": "git rev-parse ORIG_HEAD",
+      "stdout": "72d53b8e132e90cafe5bb171e8cf7194a3f9a19f",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "11",
+      "cwd": "author",
+      "command": "git reset --hard ORIG_HEAD",
+      "stdout": "HEAD is now at 72d53b8 Clamp negative capacity in main",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "11",
+      "cwd": "author",
+      "command": "git rev-parse HEAD",
+      "stdout": "72d53b8e132e90cafe5bb171e8cf7194a3f9a19f",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "11",
+      "cwd": "author",
+      "command": "python -B test_budget.py",
+      "stdout": "PASS: remaining(40, 24) == 16",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "12",
+      "cwd": "author",
+      "command": "git checkout bad-feature",
+      "stdout": "Your branch is up to date with 'origin/bad-feature'.",
+      "stderr": "Switched to branch 'bad-feature'",
+      "exit_code": 0
+    },
+    {
+      "step": "13",
+      "cwd": "author",
+      "command": "git branch -m bad-feature good-feature",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "14",
+      "cwd": "author",
+      "command": "git commit -am Correct subtraction and cover overload",
+      "stdout": "[good-feature c214af1] Correct subtraction and cover overload\n 2 files changed, 3 insertions(+), 2 deletions(-)",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "14",
+      "cwd": "author",
+      "command": "python -B test_budget.py",
+      "stdout": "PASS: normal capacity and overload checks",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "15",
+      "cwd": "author",
+      "command": "git checkout main",
+      "stdout": "Your branch is ahead of 'origin/main' by 1 commit.\n  (use \"git push\" to publish your local commits)",
+      "stderr": "Switched to branch 'main'",
+      "exit_code": 0
+    },
+    {
+      "step": "16",
+      "cwd": "author",
+      "command": "git pull --ff-only",
+      "stdout": "Already up to date.",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "17",
+      "cwd": "author",
+      "command": "git merge --no-ff good-feature -m Merge the tested capacity feature",
+      "stdout": "Merge made by the 'ort' strategy.\n test_budget.py | 3 ++-\n 1 file changed, 2 insertions(+), 1 deletion(-)",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "17",
+      "cwd": "author",
+      "command": "python -B test_budget.py",
+      "stdout": "PASS: normal capacity and overload checks",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "18",
+      "cwd": "author",
+      "command": "git push origin main",
+      "stdout": "",
+      "stderr": "To <lab>\\origin.git\n   30cd5f8..233ed60  main -> main",
+      "exit_code": 0
+    },
+    {
+      "step": "19",
+      "cwd": "author",
+      "command": "git branch --unset-upstream good-feature",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "19",
+      "cwd": "author",
+      "command": "git branch -d good-feature",
+      "stdout": "Deleted branch good-feature (was c214af1).",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "19",
+      "cwd": "author",
+      "command": "git push origin --delete bad-feature",
+      "stdout": "",
+      "stderr": "To <lab>\\origin.git\n - [deleted]         bad-feature",
+      "exit_code": 0
+    },
+    {
+      "step": "verification",
+      "cwd": "reviewer",
+      "command": "git pull --ff-only",
+      "stdout": "Updating 30cd5f8..233ed60\nFast-forward\n budget.py      | 2 +-\n test_budget.py | 3 ++-\n 2 files changed, 3 insertions(+), 2 deletions(-)",
+      "stderr": "From <lab>\\origin\n   30cd5f8..233ed60  main       -> origin/main",
+      "exit_code": 0
+    },
+    {
+      "step": "verification",
+      "cwd": "reviewer",
+      "command": "python -B test_budget.py",
+      "stdout": "PASS: normal capacity and overload checks",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "verification",
+      "cwd": "reviewer",
+      "command": "git rev-parse HEAD",
+      "stdout": "233ed6083405f47132d186500c32858bf4522082",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "graph",
+      "cwd": "author",
+      "command": "git log --oneline --graph --all --decorate",
+      "stdout": "*   233ed60 (HEAD -> main, origin/main) Merge the tested capacity feature\n|\\  \n| * c214af1 Correct subtraction and cover overload\n| | * d7b5f84 (tag: lab-bad-merge) Resolve conflict incorrectly for demonstration\n| |/| \n|/|/  \n| * e81d25d Introduce the deliberate capacity defect\n* | 72d53b8 Clamp negative capacity in main\n|/  \n* 30cd5f8 Document the teaching example\n* a704462 Initial capacity model",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "step": "verification",
+      "cwd": "author",
+      "command": "git branch -a",
+      "stdout": "* main\n  remotes/origin/main",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ]
+}

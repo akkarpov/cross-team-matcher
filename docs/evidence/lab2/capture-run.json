@@ -1,0 +1,21 @@
+{
+  "status": "PASS",
+  "captured_utc": "2026-10-08T14:02:17.979208+00:00",
+  "screenshots": [
+    "git-conflict",
+    "git-failure-reset",
+    "git-final",
+    "cpp-build",
+    "doxygen-main",
+    "doxygen-employee",
+    "doxygen-inheritance",
+    "doxygen-header",
+    "doxygen-source",
+    "comment-before",
+    "comment-after",
+    "rtf-word-export"
+  ],
+  "git_images": "Browser screenshots of the actual saved command log, not terminal windows",
+  "doxygen_images": "Actual generated HTML and method documentation",
+  "rtf_image": "HTML exported by Microsoft Word after opening the generated RTF"
+}

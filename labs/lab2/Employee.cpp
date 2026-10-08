@@ -1,5 +1,7 @@
 /** @file Employee.cpp
  * @brief Реализация учебных Employee и RegionalEmployee.
+ * @details Конструкторы проверяют имя, бюджет и номер региона. Метод available
+ * вычисляет остаток без изменения объекта. Объявления находятся в Employee.h.
  */
 #include "Employee.h"
 #include <stdexcept>

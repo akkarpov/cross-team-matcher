@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "executed_utc": "2026-10-08T11:39:15.131365+00:00",
+  "compiler": "g++.EXE (GCC) 13.2.0",
+  "doxygen": "1.18.0 (8e760943e5d9581a444cf327f43a0b4d20d29482)",
+  "cpp_assertions": 3,
+  "html_files": 24,
+  "warnings": 0,
+  "rtf_bytes": 90043,
+  "before_header_sha256": "77ef270aef8e9b14e531c9fafaa1b95851229910648a2dcc9aba500a4fedff53",
+  "after_header_sha256": "02bfb54fa92138c28f92745d8b93d3e7fc45011a63c8143475781873a5390243",
+  "comment_update_verified": true,
+  "records": [
+    {
+      "command": "C:\\Users\\Arseniy\\gcc\\bin\\g++.EXE --version",
+      "stdout": "g++.EXE (GCC) 13.2.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "<project>\\.work\\tools\\doxygen\\doxygen.exe --version",
+      "stdout": "1.18.0 (8e760943e5d9581a444cf327f43a0b4d20d29482)",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "C:\\Users\\Arseniy\\gcc\\bin\\g++.EXE -std=c++17 -Wall -Wextra -pedantic <project>\\labs\\lab2\\Employee.cpp <project>\\labs\\lab2\\main.cpp -o <project>\\.local\\lab2-cpp\\CrossTeamLab2.exe",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "<project>\\.local\\lab2-cpp\\CrossTeamLab2.exe",
+      "stdout": "Lab 2: inheritance and capacity checks passed",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "<project>\\.work\\tools\\doxygen\\doxygen.exe <project>\\.local\\lab2-cpp\\Doxyfile-before",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    },
+    {
+      "command": "<project>\\.work\\tools\\doxygen\\doxygen.exe <project>\\labs\\lab2\\Doxyfile",
+      "stdout": "",
+      "stderr": "",
+      "exit_code": 0
+    }
+  ]
+}

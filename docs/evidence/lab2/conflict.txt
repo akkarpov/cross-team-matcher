@@ -1,0 +1,6 @@
+def remaining(capacity, assigned):
+<<<<<<< HEAD
+    return max(0, capacity - assigned)
+=======
+    return capacity + assigned
+>>>>>>> bad-feature

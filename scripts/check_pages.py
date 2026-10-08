@@ -138,6 +138,33 @@ def main():
             page.goto(base + "docs/development.html", wait_until="networkidle")
             assert "Команда, этапы и версии" in page.locator("div.body h1").inner_text()
             report["checks"].append("Published Sphinx development documentation opens")
+            for document, heading, figures in (
+                ("implementation", "Полное описание реализации и стека", 1),
+                ("demonstration", "Демонстрация работающего приложения", 7),
+                ("defense", "Готовый текст защиты проекта", 0),
+                ("lab2", "Лабораторная работа № 2", 12),
+                ("protocol", "Протокол испытаний", 0),
+            ):
+                page.goto(base + f"docs/{document}.html", wait_until="networkidle")
+                assert heading in page.locator("div.body h1").inner_text()
+                assert page.locator("figure").count() >= figures
+                assert page.locator("div.body img").evaluate_all("images => images.every(image => image.complete && image.naturalWidth > 0)")
+                assert page.locator('a[href*="_sources/"]').count() == 0
+                for width in (1440, 390, 320):
+                    page.set_viewport_size({"width": width, "height": 950})
+                    assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 1"), f"Documentation overflow: {document} at {width}px"
+                page.set_viewport_size({"width": 1440, "height": 1050})
+                page.screenshot(path=str(EVIDENCE / f"docs-{document}.png"))
+                if document in ("defense", "lab2"):
+                    page.pdf(path=str(EVIDENCE / f"{document}.pdf"), format="A4", print_background=True,
+                             margin={"top": "14mm", "bottom": "14mm", "left": "12mm", "right": "12mm"})
+                report["checks"].append(f"Documentation {document}: content, images, desktop/mobile and source-link cleanup")
+            for filename, signature in (("refman.rtf", b"{\\rtf"), ("refman.pdf", b"%PDF")):
+                matches = list((SITE / "docs/_downloads").glob(f"*/{filename}"))
+                assert len(matches) == 1 and matches[0].read_bytes().startswith(signature)
+            page.goto(base + "docs/lab2-reference/class_employee.html", wait_until="networkidle")
+            assert "Рассчитать остаток недельного бюджета" in page.locator("body").inner_text()
+            report["checks"].append("Published lab includes actual Doxygen class reference, RTF and PDF artifacts")
             context.close()
             no_js = browser.new_context(java_script_enabled=False)
             static_page = no_js.new_page()

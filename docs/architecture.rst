@@ -93,11 +93,3 @@
 
 Для сетевого размещения обязательны HTTPS и TLS PostgreSQL, настройка Secure
 cookies и закрытые порты БД. Локальный учебный стенд слушает только loopback.
-
-Источники технических решений
-----------------------------------------------------------------------------------------------------
-
-* `PostgreSQL 17: postgres_fdw <https://www.postgresql.org/docs/17/postgres-fdw.html>`_
-* `Ограничения логической репликации <https://www.postgresql.org/docs/17/logical-replication-restrictions.html>`_
-* `Секционирование <https://www.postgresql.org/docs/17/ddl-partitioning.html>`_
-

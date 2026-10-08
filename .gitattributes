@@ -1,0 +1,6 @@
+# Preserve the generated RTF bytes used by the evidence checksum.
+docs/evidence/lab2/*.rtf binary
+docs/evidence/lab2/Employee-before.h.txt -text
+labs/lab2/*.h text eol=lf
+# Seven-character markers in this file are the recorded lab conflict.
+docs/evidence/lab2/conflict.txt conflict-marker-size=32

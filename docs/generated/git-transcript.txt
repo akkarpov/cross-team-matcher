@@ -1,241 +1,364 @@
-Lab 2: real Git operations; local bare remote; synthetic identities.
+Lab 2 — actual execution. Machine-specific paths shortened to <lab>.
 
-> git init --bare --initial-branch=main origin.git
-Initialized empty Git repository in D:/laptop/cross-team-matcher/.local/lab2-git/20261007T183531245067/origin.git/
+STEP setup / .
+> git --version
+git version 2.42.0.windows.2
 
 exit=0
 
-> git clone D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git author
+STEP setup / .
+> git init --bare --initial-branch=main origin.git
+Initialized empty Git repository in D:/laptop/cross-team-matcher/.local/lab2-git/20261008T110225368849/origin.git/
+
+exit=0
+
+STEP 1 / .
+> git clone <lab>\origin.git author
 
 Cloning into 'author'...
 warning: You appear to have cloned an empty repository.
 done.
 exit=0
 
+STEP setup / author
 > git config user.name Lab Participant
 
 
 exit=0
 
+STEP setup / author
 > git config user.email lab@example.invalid
 
 
 exit=0
 
+STEP setup / author
 > git add .
 
 
 exit=0
 
-> git commit -m Initial tested capacity model
-[main (root-commit) 276318f] Initial tested capacity model
- 2 files changed, 4 insertions(+)
+STEP setup / author
+> git commit -m Initial capacity model
+[main (root-commit) a704462] Initial capacity model
+ 2 files changed, 5 insertions(+)
  create mode 100644 budget.py
  create mode 100644 test_budget.py
 
 exit=0
 
+STEP setup / author
+> git add README.txt
+
+
+exit=0
+
+STEP setup / author
+> git commit -m Document the teaching example
+[main 30cd5f8] Document the teaching example
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.txt
+
+exit=0
+
+STEP setup / author
 > git push -u origin main
 branch 'main' set up to track 'origin/main'.
-To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
+To <lab>\origin.git
  * [new branch]      main -> main
 exit=0
 
-> git clone D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git reviewer
+STEP 1 / .
+> git clone <lab>\origin.git reviewer
 
 Cloning into 'reviewer'...
 done.
 exit=0
 
+STEP 2 / author
 > git pull --ff-only
 Already up to date.
 
 exit=0
 
-> git log --oneline --all
-276318f Initial tested capacity model
+STEP 3 / author
+> git diff HEAD^
+diff --git a/README.txt b/README.txt
+new file mode 100644
+index 0000000..1a0eb98
+--- /dev/null
++++ b/README.txt
+@@ -0,0 +1 @@
++Lab 2: isolated capacity model, not the production repository.
 
 exit=0
 
-> git switch -c feature/calendar
+STEP 4 / author
+> git checkout -b bad-feature
 
-Switched to a new branch 'feature/calendar'
+Switched to a new branch 'bad-feature'
 exit=0
 
-> git add budget.py
-
-
-exit=0
-
-> git commit -m Feature with a deliberate teaching defect
-[feature/calendar 6747e11] Feature with a deliberate teaching defect
+STEP 5 / author
+> git commit -am Introduce the deliberate capacity defect
+[bad-feature e81d25d] Introduce the deliberate capacity defect
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 exit=0
 
-> git push -u origin feature/calendar
-branch 'feature/calendar' set up to track 'origin/feature/calendar'.
-To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
- * [new branch]      feature/calendar -> feature/calendar
+STEP 5 / author
+> git push -u origin bad-feature
+branch 'bad-feature' set up to track 'origin/bad-feature'.
+To <lab>\origin.git
+ * [new branch]      bad-feature -> bad-feature
 exit=0
 
-> git switch main
+STEP 6 / author
+> git checkout main
 Your branch is up to date with 'origin/main'.
 Switched to branch 'main'
 exit=0
 
-> git add budget.py
-
+STEP 7 / author
+> git pull --ff-only
+Already up to date.
 
 exit=0
 
-> git commit -m Concurrent main change
-[main c180905] Concurrent main change
+STEP 7 / author
+> git commit -am Clamp negative capacity in main
+[main 72d53b8] Clamp negative capacity in main
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 exit=0
 
-> git merge --no-ff feature/calendar
+STEP 7 / author
+> git rev-parse HEAD
+72d53b8e132e90cafe5bb171e8cf7194a3f9a19f
+
+exit=0
+
+STEP 8 / author
+> git merge --no-ff bad-feature
 Auto-merging budget.py
 CONFLICT (content): Merge conflict in budget.py
 Automatic merge failed; fix conflicts and then commit the result.
 
 exit=1
 
+STEP 8 / author
+> git status --short
+UU budget.py
+
+exit=0
+
+STEP 8 / author
+> git diff
+diff --cc budget.py
+index 6dc0cb0,d330bd4..0000000
+--- a/budget.py
++++ b/budget.py
+@@@ -1,2 -1,2 +1,6 @@@
+  def remaining(capacity, assigned):
+++<<<<<<< HEAD
+ +    return max(0, capacity - assigned)
+++=======
++     return capacity + assigned
+++>>>>>>> bad-feature
+
+exit=0
+
+STEP 9 / author
 > git add budget.py
 
 
 exit=0
 
-> git commit -m Resolve conflict incorrectly for the lab
-[main 7955397] Resolve conflict incorrectly for the lab
+STEP 9 / author
+> git commit -m Resolve conflict incorrectly for demonstration
+[main d7b5f84] Resolve conflict incorrectly for demonstration
 
 exit=0
 
+STEP 9 / author
 > git rev-parse HEAD
-7955397995841993d8e45c8c7513f410001ee81b
+d7b5f84a571f602c08e22c3fdcbb6fa0b037b40e
 
 exit=0
 
-> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+STEP 10 / author
+> git diff HEAD^
+diff --git a/budget.py b/budget.py
+index 6dc0cb0..d330bd4 100644
+--- a/budget.py
++++ b/budget.py
+@@ -1,2 +1,2 @@
+ def remaining(capacity, assigned):
+-    return max(0, capacity - assigned)
++    return capacity + assigned
+
+exit=0
+
+STEP 10 / author
+> python -B test_budget.py
 
 Traceback (most recent call last):
-  File "D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\author\test_budget.py", line 2, in <module>
+  File "<lab>\author\test_budget.py", line 2, in <module>
     assert remaining(40, 24) == 16
            ^^^^^^^^^^^^^^^^^^^^^^^
 AssertionError
 exit=1
 
-> git revert -m 1 --no-edit 7955397995841993d8e45c8c7513f410001ee81b
-[main c9a999d] Revert "Resolve conflict incorrectly for the lab"
- Date: Wed Oct 7 21:36:07 2026 +0300
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-exit=0
-
-> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
+STEP 10 / author
+> git tag lab-bad-merge d7b5f84a571f602c08e22c3fdcbb6fa0b037b40e
 
 
 exit=0
 
-> git switch feature/calendar
-Your branch is up to date with 'origin/feature/calendar'.
-Switched to branch 'feature/calendar'
-exit=0
-
-> git branch -m feature/calendar-fixed
-
+STEP 11 / author
+> git rev-parse ORIG_HEAD
+72d53b8e132e90cafe5bb171e8cf7194a3f9a19f
 
 exit=0
 
-> git add budget.py
+STEP 11 / author
+> git reset --hard ORIG_HEAD
+HEAD is now at 72d53b8 Clamp negative capacity in main
+
+exit=0
+
+STEP 11 / author
+> git rev-parse HEAD
+72d53b8e132e90cafe5bb171e8cf7194a3f9a19f
+
+exit=0
+
+STEP 11 / author
+> python -B test_budget.py
+PASS: remaining(40, 24) == 16
+
+exit=0
+
+STEP 12 / author
+> git checkout bad-feature
+Your branch is up to date with 'origin/bad-feature'.
+Switched to branch 'bad-feature'
+exit=0
+
+STEP 13 / author
+> git branch -m bad-feature good-feature
 
 
 exit=0
 
-> git commit -m Fix capacity subtraction
-[feature/calendar-fixed e95f30d] Fix capacity subtraction
- 1 file changed, 1 insertion(+), 1 deletion(-)
+STEP 14 / author
+> git commit -am Correct subtraction and cover overload
+[good-feature c214af1] Correct subtraction and cover overload
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
 exit=0
 
-> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
-
+STEP 14 / author
+> python -B test_budget.py
+PASS: normal capacity and overload checks
 
 exit=0
 
-> git switch main
-Your branch is ahead of 'origin/main' by 4 commits.
+STEP 15 / author
+> git checkout main
+Your branch is ahead of 'origin/main' by 1 commit.
   (use "git push" to publish your local commits)
 Switched to branch 'main'
 exit=0
 
-> git merge --no-ff feature/calendar-fixed
-Auto-merging budget.py
-CONFLICT (content): Merge conflict in budget.py
-Automatic merge failed; fix conflicts and then commit the result.
-
-
-exit=1
-> git add budget.py
-
+STEP 16 / author
+> git pull --ff-only
+Already up to date.
 
 exit=0
 
-> git commit -m Resolve second conflict with tested subtraction
-[main d40a8d1] Resolve second conflict with tested subtraction
+STEP 17 / author
+> git merge --no-ff good-feature -m Merge the tested capacity feature
+Merge made by the 'ort' strategy.
+ test_budget.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 exit=0
 
-> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
-
+STEP 17 / author
+> python -B test_budget.py
+PASS: normal capacity and overload checks
 
 exit=0
 
+STEP 18 / author
 > git push origin main
 
-To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
-   276318f..d40a8d1  main -> main
+To <lab>\origin.git
+   30cd5f8..233ed60  main -> main
 exit=0
 
-> git branch --unset-upstream feature/calendar-fixed
+STEP 19 / author
+> git branch --unset-upstream good-feature
 
-
-exit=0
-
-> git branch -d feature/calendar-fixed
-Deleted branch feature/calendar-fixed (was e95f30d).
 
 exit=0
 
-> git push origin --delete feature/calendar
+STEP 19 / author
+> git branch -d good-feature
+Deleted branch good-feature (was c214af1).
 
-To D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin.git
- - [deleted]         feature/calendar
 exit=0
 
+STEP 19 / author
+> git push origin --delete bad-feature
+
+To <lab>\origin.git
+ - [deleted]         bad-feature
+exit=0
+
+STEP verification / reviewer
 > git pull --ff-only
-Updating 276318f..d40a8d1
+Updating 30cd5f8..233ed60
 Fast-forward
-From D:\laptop\cross-team-matcher\.local\lab2-git\20261007T183531245067\origin
-   276318f..d40a8d1  main       -> origin/main
+ budget.py      | 2 +-
+ test_budget.py | 3 ++-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+From <lab>\origin
+   30cd5f8..233ed60  main       -> origin/main
 exit=0
 
-> C:\Users\Arseniy\AppData\Local\Programs\Python\Python311\python.exe -B test_budget.py
-
+STEP verification / reviewer
+> python -B test_budget.py
+PASS: normal capacity and overload checks
 
 exit=0
 
-> git log --oneline --graph --all
-*   d40a8d1 Resolve second conflict with tested subtraction
-|\  
-| * e95f30d Fix capacity subtraction
-* | c9a999d Revert "Resolve conflict incorrectly for the lab"
-* | 7955397 Resolve conflict incorrectly for the lab
-|\| 
-| * 6747e11 Feature with a deliberate teaching defect
-* | c180905 Concurrent main change
-|/  
-* 276318f Initial tested capacity model
+STEP verification / reviewer
+> git rev-parse HEAD
+233ed6083405f47132d186500c32858bf4522082
+
+exit=0
+
+STEP graph / author
+> git log --oneline --graph --all --decorate
+*   233ed60 (HEAD -> main, origin/main) Merge the tested capacity feature
+|\
+| * c214af1 Correct subtraction and cover overload
+| | * d7b5f84 (tag: lab-bad-merge) Resolve conflict incorrectly for demonstration
+| |/|
+|/|/
+| * e81d25d Introduce the deliberate capacity defect
+* | 72d53b8 Clamp negative capacity in main
+|/
+* 30cd5f8 Document the teaching example
+* a704462 Initial capacity model
+
+exit=0
+
+STEP verification / author
+> git branch -a
+* main
+  remotes/origin/main
 
 exit=0

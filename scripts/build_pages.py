@@ -23,7 +23,7 @@ OUTPUT = ROOT / "dist" / "pages"
 
 def history(directory: Path) -> list[dict]:
     result = subprocess.run(
-        ["git", "-C", str(directory), "log", "-30", "--format=%H%x09%aI%x09%an%x09%s"],
+        ["git", "-c", "core.fsmonitor=false", "-C", str(directory), "log", "-30", "--format=%H%x09%aI%x09%an%x09%s"],
         capture_output=True, text=True, encoding="utf-8", check=False,
     )
     if result.returncode:
@@ -85,7 +85,6 @@ def main():
     for screenshot in content["screenshots"]:
         shutil.copy2(ROOT / "docs/evidence" / screenshot["file"], OUTPUT / "assets" / screenshot["file"])
     shutil.copytree(ROOT / "docs/_build/html", OUTPUT / "docs")
-    shutil.copy2(ROOT / "docs/reference/original-plan.html", OUTPUT / "original-plan.html")
     shutil.copy2(ROOT / "report/content.json", OUTPUT / "development.json")
     (OUTPUT / "build.json").write_text(json.dumps({
         "version": version, "revision": revision, "built_at": content["built_at"],

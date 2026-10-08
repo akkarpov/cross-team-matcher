@@ -1,0 +1,5 @@
+Title = Cross-Team Matcher — лабораторная работа № 2
+Company = МИЭМ НИУ ВШЭ
+Author = Карпов А. К., Лебедев М. О., Кречун А. В.
+DocumentType = Документация учебного C++-проекта
+Subject = Классы Employee и RegionalEmployee, методы, параметры и наследование

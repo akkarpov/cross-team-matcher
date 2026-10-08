@@ -13,6 +13,9 @@ Cross-Team Matcher
 .. toctree::
    :maxdepth: 2
 
+   implementation
+   demonstration
+   defense
    quickstart
    user-guide
    architecture
@@ -24,9 +27,8 @@ Cross-Team Matcher
    api
    schema
 
-Исходное `техническое задание <https://docs.google.com/document/d/1hJzW6u7EndforUwxPeMt6Hbnaq3CJilYWin5Lmo7Ao8/edit>`_
-и ``ТРПО_Лаба2_2023.pdf`` входят в исходные материалы работы.
-Локальные снимки: :download:`ТЗ 4.1 <reference/spec-v4.1.txt>` и
-:download:`методические указания, PDF <reference/lab2.pdf>`.
-Фактический протокол запусков хранится отдельно в ``docs/protocol.md``.
+Для знакомства с проектом начните с :doc:`implementation`: там описаны стек,
+данные и путь запроса через все слои. В :doc:`demonstration` показан завершённый
+сценарий со скриншотами. :doc:`defense` содержит готовое выступление для трёх
+участников, а :doc:`lab2` — результаты выполненной работы с Git и Doxygen.
 

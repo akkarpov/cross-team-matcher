@@ -5,6 +5,7 @@ OUTPUT_DIRECTORY       = docs/_build/doxygen
 OUTPUT_LANGUAGE        = Russian
 INPUT_ENCODING         = UTF-8
 INPUT                  = app labs/lab2 docs/doxygen-main.dox
+EXCLUDE                = labs/lab2/mainpage.dox
 FILE_PATTERNS          = *.py *.h *.cpp *.dox
 RECURSIVE              = YES
 EXTRACT_ALL            = YES
